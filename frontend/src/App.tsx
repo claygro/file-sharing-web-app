@@ -1,11 +1,10 @@
 import "./App.css";
+import Signup from "./components/Signup";
 
 function App() {
   return (
     <>
-      <div>
-        <h1 className="text-2xl">Hello world</h1>
-      </div>
+      <Signup />
     </>
   );
 }
