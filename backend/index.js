@@ -3,6 +3,7 @@ import authRoutes from "./src/routes/auth.routes.js";
 import "dotenv/config";
 import mongoose from "mongoose";
 const app = express();
+app.use(express.json());
 app.use("/file", authRoutes);
 const port = process.env.PORT;
 app.listen(port, async () => {
