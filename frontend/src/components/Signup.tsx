@@ -87,7 +87,9 @@ const Signup = () => {
       data.append("password", formData.password);
       if (croppedImage) data.append("avatar", croppedImage);
 
-      await connection.post("/auth/signup", data);
+      await connection.post("/auth/signup", data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       setSuccess("Welcome aboard! Your account is ready.");
       setFormData({ userName: "", email: "", password: "" });
       setCroppedImage(null);

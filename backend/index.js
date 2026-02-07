@@ -13,6 +13,7 @@ app.use(
 );
 app.use(cookieParser());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use("/auth", authRoutes);
 const port = process.env.PORT;
 app.listen(port, async () => {

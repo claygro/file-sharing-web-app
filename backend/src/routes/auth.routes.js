@@ -1,6 +1,11 @@
 import { Router } from "express";
 import AuthControllers from "../controllers/auth.contollers.js";
+import uploadAvatar from "../uploadAvatar.js";
 const authRoutes = Router();
 const authControllers = new AuthControllers();
-authRoutes.post("/signup", authControllers.signup);
+authRoutes.post(
+  "/signup",
+  uploadAvatar.single("avatar"),
+  authControllers.signup,
+);
 export default authRoutes;
