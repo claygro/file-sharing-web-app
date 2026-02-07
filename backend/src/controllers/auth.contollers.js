@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import "dotenv/config";
 class AuthControllers {
   async signup(req, res) {
-    const { userName, email, password } = req.body;
+    const { avatar, userName, email, password } = req.body;
     try {
       const emailExist = await UserModel.findOne({ email });
       if (emailExist) {
@@ -13,6 +13,7 @@ class AuthControllers {
       const salt = await bcrypt.genSalt(10);
       const hash = await bcrypt.hash(password, salt);
       const response = await UserModel.create({
+        avatar,
         userName,
         email,
         password: hash,
