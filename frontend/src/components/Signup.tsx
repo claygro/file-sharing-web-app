@@ -78,7 +78,7 @@ const Signup = () => {
   useEffect(() => {
     const isLoggedInUser = localStorage.getItem("userLoggedIn");
     if (isLoggedInUser && JSON.parse(isLoggedInUser) == true) {
-      navigate("/home");
+      navigate("/layout/home");
     }
   }, [navigate]);
   const handleSubmit = async (e: React.FormEvent) => {
@@ -102,7 +102,7 @@ const Signup = () => {
       setCroppedImage(null);
       setPreviewUrl(null);
       localStorage.setItem("userLoggedIn", JSON.stringify(true));
-      navigate("/home");
+      navigate("/layout/home");
     } catch (err: any) {
       setError(
         err.response?.data?.message ||
