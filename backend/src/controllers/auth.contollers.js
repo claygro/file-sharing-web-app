@@ -27,8 +27,9 @@ class AuthControllers {
       });
       const userToken = jwt.sign(
         {
-          userName,
-          email,
+          avatar: avatarData,
+          username: userName,
+          email: email,
         },
         process.env.JWT_SECRETE_KEY,
         { expiresIn: "30d" },
@@ -40,7 +41,6 @@ class AuthControllers {
         maxAge: 30 * 24 * 60 * 60 * 1000,
       });
       res.status(200).json(response);
-      res.status(200).send("Hello world");
     } catch (error) {
       res.status(500).json({ message: `Error in signup ${error}` });
     }

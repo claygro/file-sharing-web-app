@@ -2,6 +2,7 @@ import { useState, useRef, type ChangeEvent, useEffect } from "react";
 import Cropper from "react-cropper";
 import type { ReactCropperElement } from "react-cropper";
 import "cropperjs/dist/cropper.css";
+import { useNavigate } from "react-router-dom";
 import {
   Camera,
   User,
@@ -20,6 +21,7 @@ interface SignupFormData {
 }
 
 const Signup = () => {
+  const navigate = useNavigate();
   const cropperRef = useRef<ReactCropperElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null | any>(null);
 
@@ -73,7 +75,12 @@ const Signup = () => {
       0.9,
     );
   };
-
+  useEffect(() => {
+    const isLoggedInUser = localStorage.getItem("userLoggedIn");
+    if (isLoggedInUser && JSON.parse(isLoggedInUser) == true) {
+      navigate("/home");
+    }
+  }, [navigate]);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -94,6 +101,8 @@ const Signup = () => {
       setFormData({ userName: "", email: "", password: "" });
       setCroppedImage(null);
       setPreviewUrl(null);
+      localStorage.setItem("userLoggedIn", JSON.stringify(true));
+      navigate("/home");
     } catch (err: any) {
       setError(
         err.response?.data?.message ||
