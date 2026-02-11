@@ -14,6 +14,10 @@ const fileUploadSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    fileType: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true },
 );
