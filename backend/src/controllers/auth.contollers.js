@@ -31,7 +31,7 @@ class AuthControllers {
           username: userName,
           email: email,
         },
-        process.env.JWT_SECRETE_KEY,
+        process.env.JWT_SECRET_KEY,
         { expiresIn: "30d" },
       );
       res.cookie("userToken", userToken, {
