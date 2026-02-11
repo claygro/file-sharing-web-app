@@ -3,10 +3,14 @@ import NavBar from "./NavBar";
 const LayOut = () => {
   return (
     <>
-      <div>
-        <NavBar />
+      <div className="flex gap-x-2">
+        <div>
+          <NavBar />
+        </div>
+        <div>
+          <Outlet />
+        </div>
       </div>
-      <Outlet />
     </>
   );
 };
