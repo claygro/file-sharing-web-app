@@ -15,7 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Signup />} />
           <Route path="/layout" element={<LayOut />}>
-            <Route path="home" element={<Home />} />
+            <Route index element={<Home />} />
             <Route path="mydrive" element={<MyDrive />} />
             <Route path="share" element={<Share />} />
             <Route path="history" element={<History />} />
