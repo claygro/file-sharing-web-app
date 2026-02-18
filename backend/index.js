@@ -1,5 +1,6 @@
 import express from "express";
 import authRoutes from "./src/routes/auth.routes.js";
+import fileRoutes from "./src/routes/fileUpload.routes.js";
 import "dotenv/config";
 import cors from "cors";
 import mongoose from "mongoose";
@@ -15,6 +16,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/auth", authRoutes);
+app.use("/uploadFile", fileRoutes);
 const port = process.env.PORT;
 app.listen(port, async () => {
   try {

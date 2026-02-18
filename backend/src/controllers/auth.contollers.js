@@ -27,6 +27,7 @@ class AuthControllers {
       });
       const userToken = jwt.sign(
         {
+          userid: response._id,
           avatar: avatarData,
           username: userName,
           email: email,
