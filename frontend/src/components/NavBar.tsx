@@ -47,12 +47,22 @@ const NavBar = () => {
           }`}
         >
           <Plus size={20} strokeWidth={3} />
-          {!isCollapsed && <span className="font-semibold">New</span>}
+          {!isCollapsed && (
+            <span
+              className={`transition-all duration-300 overflow-hidden ${
+                isCollapsed
+                  ? "opacity-0 w-0 translate-x-[-10px]"
+                  : "opacity-100 w-auto translate-x-0"
+              }`}
+            >
+              New
+            </span>
+          )}
         </button>
 
         {/* showing file uploading pop up box */}
         {isShowPopUp && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
+          <div className="fixed inset-0 flex items-center justify-center bg-white/40 backdrop-blur-sm z-50 h-dvh w-dvw">
             {/* Note: Ensure UploadFilePopUp has its own background/styling */}
             <UploadFilePopUp />
           </div>
@@ -70,7 +80,17 @@ const NavBar = () => {
           }
         >
           <Home size={20} />
-          {!isCollapsed && <span>Home</span>}
+          {!isCollapsed && (
+            <span
+              className={`transition-all duration-300 overflow-hidden ${
+                isCollapsed
+                  ? "opacity-0 w-0 translate-x-[-10px]"
+                  : "opacity-100 w-auto translate-x-0"
+              }`}
+            >
+              Home
+            </span>
+          )}
         </NavLink>
 
         <NavLink
@@ -84,7 +104,17 @@ const NavBar = () => {
           }
         >
           <Folder size={20} />
-          {!isCollapsed && <span>My Drive</span>}
+          {!isCollapsed && (
+            <span
+              className={`transition-all duration-300 overflow-hidden ${
+                isCollapsed
+                  ? "opacity-0 w-0 translate-x-[-10px]"
+                  : "opacity-100 w-auto translate-x-0"
+              }`}
+            >
+              My Drive
+            </span>
+          )}
         </NavLink>
 
         <NavLink
@@ -98,7 +128,17 @@ const NavBar = () => {
           }
         >
           <Share2 size={20} />
-          {!isCollapsed && <span>Share</span>}
+          {!isCollapsed && (
+            <span
+              className={`transition-all duration-300 overflow-hidden ${
+                isCollapsed
+                  ? "opacity-0 w-0 translate-x-[-10px]"
+                  : "opacity-100 w-auto translate-x-0"
+              }`}
+            >
+              Share
+            </span>
+          )}
         </NavLink>
 
         <NavLink
@@ -112,7 +152,17 @@ const NavBar = () => {
           }
         >
           <History size={20} />
-          {!isCollapsed && <span>History</span>}
+          {!isCollapsed && (
+            <span
+              className={`transition-all duration-300 overflow-hidden ${
+                isCollapsed
+                  ? "opacity-0 w-0 translate-x-[-10px]"
+                  : "opacity-100 w-auto translate-x-0"
+              }`}
+            >
+              History
+            </span>
+          )}
         </NavLink>
 
         <NavLink
@@ -126,7 +176,17 @@ const NavBar = () => {
           }
         >
           <Clock size={20} />
-          {!isCollapsed && <span>Recent</span>}
+          {!isCollapsed && (
+            <span
+              className={`transition-all duration-300 overflow-hidden ${
+                isCollapsed
+                  ? "opacity-0 w-0 translate-x-[-10px]"
+                  : "opacity-100 w-auto translate-x-0"
+              }`}
+            >
+              Recent
+            </span>
+          )}
         </NavLink>
 
         <NavLink
@@ -140,7 +200,17 @@ const NavBar = () => {
           }
         >
           <Settings size={20} />
-          {!isCollapsed && <span>Setting</span>}
+          {!isCollapsed && (
+            <span
+              className={`transition-all duration-300 overflow-hidden ${
+                isCollapsed
+                  ? "opacity-0 w-0 translate-x-[-10px]"
+                  : "opacity-100 w-auto translate-x-0"
+              }`}
+            >
+              Setting
+            </span>
+          )}
         </NavLink>
       </div>
     </nav>
