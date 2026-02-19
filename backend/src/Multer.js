@@ -7,18 +7,10 @@ const storage = new CloudinaryStorage({
   params: async (req, file) => {
     const isImage = file.mimetype.startsWith("image");
 
-    if (isImage) {
-      return {
-        folder: "uploads/images",
-        resource_type: "image",
-        allowed_formats: ["jpg", "jpeg", "png", "webp"],
-      };
-    } else {
-      return {
-        folder: "uploads/docs",
-        resource_type: "raw", // for pdf, docx, pptx, etc
-      };
-    }
+    return {
+      folder: "uploads",
+      resource_type: "auto",
+    };
   },
 });
 
