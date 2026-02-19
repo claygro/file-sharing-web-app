@@ -7,103 +7,140 @@ import {
   Clock,
   Settings,
   Plus,
+  Menu, // Added for the toggle
 } from "lucide-react";
+import { useState } from "react";
+import UploadFilePopUp from "./UploadFilePopUp";
+
 const NavBar = () => {
+  const [isShowPopUp, setIsShowPopUp] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false); // UI State for toggle
+
+  const handleUploadFile = () => {
+    setIsShowPopUp(true);
+    console.log(isShowPopUp);
+  };
+
   const navClass =
-    "flex items-center gap-3 px-4 py-2 rounded-lg transition-colors duration-200 cursor-pointer";
+    "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 cursor-pointer mb-1 whitespace-nowrap";
 
   return (
-    <nav className="flex flex-col justify-between h-dvh w-60 bg-white border-r p-4">
+    <nav
+      className={`relative flex flex-col justify-between h-screen bg-white border-r border-gray-100 p-3 transition-all duration-300 ${
+        isCollapsed ? "w-20" : "w-64"
+      }`}
+    >
       {/* Top Section */}
       <div className="space-y-2">
-        <button className="flex items-center gap-3 mb-22 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition cursor-pointer">
-          <Plus size={18} />
-          New
+        {/* Toggle Button / Hamburger */}
+        <button
+          onClick={() => setIsCollapsed(!isCollapsed)}
+          className="p-2 mb-4 hover:bg-gray-100 rounded-lg text-gray-500 transition-colors"
+        >
+          <Menu size={24} />
         </button>
+
+        <button
+          onClick={handleUploadFile}
+          className={`flex items-center gap-3 mb-8 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition shadow-lg shadow-blue-200 active:scale-95 ${
+            isCollapsed ? "p-3 mx-auto" : "px-6 py-3 w-full"
+          }`}
+        >
+          <Plus size={20} strokeWidth={3} />
+          {!isCollapsed && <span className="font-semibold">New</span>}
+        </button>
+
+        {/* showing file uploading pop up box */}
+        {isShowPopUp && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
+            {/* Note: Ensure UploadFilePopUp has its own background/styling */}
+            <UploadFilePopUp />
+          </div>
+        )}
 
         <NavLink
           to="/layout"
-          end // Only mark this link as active if the URL matches exactly. otherwise unmark it means end it.
+          end
           className={({ isActive }) =>
-            `${navClass} ${
+            `${navClass} ${isCollapsed ? "justify-center" : ""} ${
               isActive
-                ? "bg-blue-600 text-white"
-                : "text-gray-700 hover:bg-blue-100 hover:text-blue-600"
+                ? "bg-blue-600 text-white shadow-md shadow-blue-100"
+                : "text-gray-600 hover:bg-blue-50 hover:text-blue-600"
             }`
           }
         >
-          <Home size={18} />
-          Home
+          <Home size={20} />
+          {!isCollapsed && <span>Home</span>}
         </NavLink>
 
         <NavLink
           to="/layout/mydrive"
           className={({ isActive }) =>
-            `${navClass} ${
+            `${navClass} ${isCollapsed ? "justify-center" : ""} ${
               isActive
-                ? "bg-blue-600 text-white"
-                : "text-gray-700 hover:bg-blue-100 hover:text-blue-600"
+                ? "bg-blue-600 text-white shadow-md shadow-blue-100"
+                : "text-gray-600 hover:bg-blue-50 hover:text-blue-600"
             }`
           }
         >
-          <Folder size={18} />
-          My Drive
+          <Folder size={20} />
+          {!isCollapsed && <span>My Drive</span>}
         </NavLink>
 
         <NavLink
           to="/layout/share"
           className={({ isActive }) =>
-            `${navClass} ${
+            `${navClass} ${isCollapsed ? "justify-center" : ""} ${
               isActive
-                ? "bg-blue-600 text-white"
-                : "text-gray-700 hover:bg-blue-100 hover:text-blue-600"
+                ? "bg-blue-600 text-white shadow-md shadow-blue-100"
+                : "text-gray-600 hover:bg-blue-50 hover:text-blue-600"
             }`
           }
         >
-          <Share2 size={18} />
-          Share
+          <Share2 size={20} />
+          {!isCollapsed && <span>Share</span>}
         </NavLink>
 
         <NavLink
           to="/layout/history"
           className={({ isActive }) =>
-            `${navClass} ${
+            `${navClass} ${isCollapsed ? "justify-center" : ""} ${
               isActive
-                ? "bg-blue-600 text-white"
-                : "text-gray-700 hover:bg-blue-100 hover:text-blue-600"
+                ? "bg-blue-600 text-white shadow-md shadow-blue-100"
+                : "text-gray-600 hover:bg-blue-50 hover:text-blue-600"
             }`
           }
         >
-          <History size={18} />
-          History
+          <History size={20} />
+          {!isCollapsed && <span>History</span>}
         </NavLink>
 
         <NavLink
           to="/layout/recents"
           className={({ isActive }) =>
-            `${navClass} ${
+            `${navClass} ${isCollapsed ? "justify-center" : ""} ${
               isActive
-                ? "bg-blue-600 text-white"
-                : "text-gray-700 hover:bg-blue-100 hover:text-blue-600"
+                ? "bg-blue-600 text-white shadow-md shadow-blue-100"
+                : "text-gray-600 hover:bg-blue-50 hover:text-blue-600"
             }`
           }
         >
-          <Clock size={18} />
-          Recent
+          <Clock size={20} />
+          {!isCollapsed && <span>Recent</span>}
         </NavLink>
 
         <NavLink
           to="/layout/setting"
           className={({ isActive }) =>
-            `${navClass} ${
+            `${navClass} ${isCollapsed ? "justify-center" : ""} ${
               isActive
-                ? "bg-blue-600 text-white"
-                : "text-gray-700 hover:bg-blue-100 hover:text-blue-600"
+                ? "bg-blue-600 text-white shadow-md shadow-blue-100"
+                : "text-gray-600 hover:bg-blue-50 hover:text-blue-600"
             }`
           }
         >
-          <Settings size={18} />
-          Setting
+          <Settings size={20} />
+          {!isCollapsed && <span>Setting</span>}
         </NavLink>
       </div>
     </nav>
