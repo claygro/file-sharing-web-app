@@ -5,9 +5,6 @@ class FileUploadController {
     let { title } = req.body;
     const file = req.file;
     const { userid } = req.user;
-    // console.log(userid);
-    console.log(file);
-    console.log(file.path);
     //to find the extension of file.
     let extensionName = path.extname(file.originalname).replace(".", "");
     console.log(extensionName);

@@ -70,6 +70,7 @@ const UploadFilePopUp = ({
               Title
             </label>
             <input
+              required
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               type="text"
@@ -86,6 +87,7 @@ const UploadFilePopUp = ({
             className="relative border-2 border-dashed border-gray-300 rounded-2xl p-12 flex flex-col items-center justify-center text-center cursor-pointer hover:border-blue-900 hover:bg-blue-50/30 transition group"
           >
             <input
+              required
               ref={fileInputRef}
               onChange={handleChangeFile}
               type="file"
