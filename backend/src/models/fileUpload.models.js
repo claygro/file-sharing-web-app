@@ -9,8 +9,11 @@ const fileUploadSchema = new mongoose.Schema(
     title: {
       type: String,
     },
-    sizeOfFile: {
+    sizeOfFileInKb: {
       type: Number,
+    },
+    sizeOfFileInMb:{
+      type:Number,
     },
     fileType: {
       type: String,

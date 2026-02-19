@@ -4,26 +4,21 @@ import cloudinary from "./cloudinary.js";
 
 const storage = new CloudinaryStorage({
   cloudinary,
-  params: {
-    folder: "avatars",
-    resource_type: "auto", // images only
-    allowed_formats: [
-      "jpg",
-      "jpeg",
-      "png",
-      "webp", // images
-      "pdf", // PDF
-      "doc",
-      "docx", // Word
-      "xls",
-      "xlsx", // Excel
-      "ppt",
-      "pptx", // PowerPoint
-      "txt",
-    ],
-    transformation: [
-      { width: 300, height: 300, crop: "fill", gravity: "face" },
-    ],
+  params: async (req, file) => {
+    const isImage = file.mimetype.startsWith("image");
+
+    if (isImage) {
+      return {
+        folder: "uploads/images",
+        resource_type: "image",
+        allowed_formats: ["jpg", "jpeg", "png", "webp"],
+      };
+    } else {
+      return {
+        folder: "uploads/docs",
+        resource_type: "raw", // for pdf, docx, pptx, etc
+      };
+    }
   },
 });
 

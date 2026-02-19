@@ -7,6 +7,7 @@ const fileUploadController = new FileUploadController();
 fileRoutes.post(
   "/upload",
   uploadAvatar.single("file"),
+  UserMiddleware,
   fileUploadController.fileUpload,
 );
 export default fileRoutes;
