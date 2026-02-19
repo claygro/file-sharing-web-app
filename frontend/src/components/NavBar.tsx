@@ -13,7 +13,7 @@ import { useState } from "react";
 import UploadFilePopUp from "./UploadFilePopUp";
 
 const NavBar = () => {
-  const [isShowPopUp, setIsShowPopUp] = useState(false);
+  const [isShowPopUp, setIsShowPopUp] = useState<boolean>(false);
   const [isCollapsed, setIsCollapsed] = useState(false); // UI State for toggle
 
   const handleUploadFile = () => {
@@ -64,7 +64,7 @@ const NavBar = () => {
         {isShowPopUp && (
           <div className="fixed inset-0 flex items-center justify-center bg-white/40 backdrop-blur-sm z-50 h-dvh w-dvw">
             {/* Note: Ensure UploadFilePopUp has its own background/styling */}
-            <UploadFilePopUp />
+            <UploadFilePopUp setIsShowPopUp={setIsShowPopUp} />
           </div>
         )}
 
