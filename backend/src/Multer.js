@@ -4,9 +4,7 @@ import cloudinary from "./cloudinary.js";
 
 const storage = new CloudinaryStorage({
   cloudinary,
-  params: async (req, file) => {
-    const isImage = file.mimetype.startsWith("image");
-
+  params: async () => {
     return {
       folder: "uploads",
       resource_type: "auto",
