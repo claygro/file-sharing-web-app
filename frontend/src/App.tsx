@@ -8,6 +8,7 @@ import Share from "./components/Share";
 import History from "./components/History";
 import Recents from "./components/Recents";
 import Settings from "./components/Settings";
+
 function App() {
   return (
     <>

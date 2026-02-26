@@ -1,10 +1,12 @@
 import { Outlet } from "react-router-dom";
 import NavBar from "./NavBar";
+import SearchBox from "./Search";
 const LayOut = () => {
   return (
     <>
+      <SearchBox />
       <div className="flex">
-        <div className="flex-1">
+        <div className="">
           <NavBar />
         </div>
         <div className="flex-10">
