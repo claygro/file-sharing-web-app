@@ -5,12 +5,13 @@ import { RefreshCcw } from "lucide-react";
 
 const Home = () => {
   interface FileDataType {
-    id: string;
+    _id: string;
     sizeOfFileInKb: number;
     sizeOfFileInMb: number;
     title: string;
     createdAt: string;
     fileType: string;
+    fileId: string;
   }
 
   const [fileData, setFileData] = useState<FileDataType[]>();
@@ -30,6 +31,19 @@ const Home = () => {
 
   const handleRefresh = () => {
     retriveFileData();
+  };
+  const handleFileClick = async (fileId: string) => {
+    try {
+      console.log(fileId);
+      const response = await connection.get(`/fileVault/file/${fileId}`);
+      console.log(response);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.log(`Error in getting url ${error}`);
+      } else {
+        console.log(`Error in getting url ${error}`);
+      }
+    }
   };
   return (
     <div className="min-h-screen bg-gray-50">
@@ -70,8 +84,9 @@ const Home = () => {
                   .reverse()
                   ?.map((file) => (
                     <tr
-                      key={file.id}
+                      key={file._id}
                       className="border-b border-gray-100 last:border-none hover:bg-gray-50 transition"
+                      onClick={() => handleFileClick(file.fileId)}
                     >
                       {/* Name */}
                       <td className="py-4 px-5">
