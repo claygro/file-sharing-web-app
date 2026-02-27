@@ -2,10 +2,7 @@ import mongoose from "mongoose";
 const fileUploadSchema = new mongoose.Schema(
   {
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
-    file: {
-      type: String,
-      required: true,
-    },
+
     title: {
       type: String,
     },

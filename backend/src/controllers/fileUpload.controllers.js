@@ -24,7 +24,6 @@ class FileUploadController {
         userId: userid,
         title: title,
         originalFileName: result.original_filename,
-        file: result.public_id,
         fileType: extensionName,
         sizeOfFileInKb: sizeInKb,
         fileId,

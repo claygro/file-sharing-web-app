@@ -6,6 +6,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import fileRetriveRoutes from "./src/routes/fileRetrive.routes.js";
+import fileUrlRoutes from "./src/routes/fileUrl.routes.js";
 const app = express();
 app.use(
   cors({
@@ -19,6 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/auth", authRoutes);
 app.use("/uploadFile", fileRoutes);
 app.use("/retrive", fileRetriveRoutes);
+app.use("/fileVault", fileUrlRoutes);
 const port = process.env.PORT;
 app.listen(port, async () => {
   try {
