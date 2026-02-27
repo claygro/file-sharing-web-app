@@ -9,14 +9,26 @@ const fileUploadSchema = new mongoose.Schema(
     title: {
       type: String,
     },
+    originalFileName: {
+      type: String,
+      required: true,
+    },
     sizeOfFileInKb: {
       type: Number,
     },
-    sizeOfFileInMb:{
-      type:Number,
+    sizeOfFileInMb: {
+      type: Number,
     },
     fileType: {
       type: String,
+    },
+    fileId: {
+      type: String,
+      required: true,
+    },
+    secure_url: {
+      type: String,
+      required: true,
     },
   },
   { timestamps: true },

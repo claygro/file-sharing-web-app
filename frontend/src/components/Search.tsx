@@ -5,7 +5,7 @@ const SearchBox = () => {
   return (
     <>
       <header className="sticky top-0 z-20 bg-white border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center gap-3">
+        <div className=" px-4 sm:px-6 lg:px-8 py-3 flex justify-around items-center ">
           {/* Logo */}
           <div className="flex items-center gap-2 shrink-0 mr-1">
             <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-indigo-50">
@@ -17,7 +17,7 @@ const SearchBox = () => {
           </div>
 
           {/* Search */}
-          <div className="flex-1">
+          <div className="flex-1 max-w-2xl">
             <div className="relative">
               <Search
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
