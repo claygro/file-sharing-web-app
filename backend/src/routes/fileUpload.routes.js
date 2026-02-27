@@ -1,12 +1,12 @@
 import { Router } from "express";
 import UserMiddleware from "../middlewares/user.middlewares.js";
-import uploadAvatar from "../Multer.js";
+import { uploadFile } from "../Multer.js";
 import FileUploadController from "../controllers/fileUpload.controllers.js";
 const fileRoutes = Router();
 const fileUploadController = new FileUploadController();
 fileRoutes.post(
   "/upload",
-  uploadAvatar.single("file"),
+  uploadFile.single("file"),
   UserMiddleware,
   fileUploadController.fileUpload,
 );

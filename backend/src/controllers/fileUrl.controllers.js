@@ -14,6 +14,8 @@ class FileUrlLink {
         responseType: "stream",
       });
       //response.data=a stream of file data coming from Cloudinary.
+      //.pipe() connects one stream to another. means: 
+      // Take data from Cloudinary → directly send it to browser response
       response.data.pipe(res);
     } catch (error) {
       res

@@ -6,15 +6,25 @@ const storage = new CloudinaryStorage({
   cloudinary,
   params: async () => {
     return {
-      folder: "uploads",
+      folder: "uploadsAvatar",
       resource_type: "auto",
     };
   },
 });
 
-const uploadAvatar = multer({
+export const uploadAvatar = multer({
   storage,
   limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
 });
 
-export default uploadAvatar;
+// 🔹 FileVault Storage (temporary local storage)
+export const uploadFile = multer({
+  storage: new CloudinaryStorage({
+    cloudinary,
+    params: async () => ({
+      folder: "fileVault",
+      resource_type: "auto", // supports any file type
+    }),
+  }),
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
+});

@@ -18,8 +18,6 @@ class FileUploadController {
         resource_type: "auto",
         folder: "fileVault",
       });
-      console.log(`Public id ${result.public_id}`);
-      console.log(`Secure url ${result.secure_url}`);
       const response = await FileUploadModel.create({
         userId: userid,
         title: title,
