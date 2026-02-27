@@ -36,6 +36,9 @@ const Home = () => {
     try {
       console.log(fileId);
       const response = await connection.get(`/fileVault/file/${fileId}`);
+      console.log(
+        window.open(`http://localhost:8000/fileVault/file/${fileId}`, "_blank"),
+      );
       console.log(response);
     } catch (error: unknown) {
       if (error instanceof Error) {

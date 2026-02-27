@@ -13,6 +13,7 @@ class FileUrlLink {
         method: "GET",
         responseType: "stream",
       });
+      //response.data=a stream of file data coming from Cloudinary.
       response.data.pipe(res);
     } catch (error) {
       res
