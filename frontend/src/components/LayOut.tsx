@@ -4,13 +4,15 @@ import SearchBox from "./Search";
 const LayOut = () => {
   return (
     <>
-      <SearchBox />
-      <div className="flex">
-        <div className="">
-          <NavBar />
-        </div>
-        <div className="flex-10">
-          <Outlet />
+      <div className="h-screen flex flex-col overflow-hidden">
+        <SearchBox />
+        <div className="flex">
+          <div className="sticky top-0 h-screen">
+            <NavBar />
+          </div>
+          <div className="flex-1">
+            <Outlet />
+          </div>
         </div>
       </div>
     </>

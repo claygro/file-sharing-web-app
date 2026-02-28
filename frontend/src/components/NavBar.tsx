@@ -26,7 +26,7 @@ const NavBar = () => {
 
   return (
     <nav
-      className={`relative flex flex-col justify-between h-screen bg-white border-r border-gray-100 p-3 transition-all duration-300 ${
+      className={`flex flex-col justify-between h-full bg-white border-r border-gray-100 p-3 transition-all duration-300 ${
         isCollapsed ? "w-20" : "w-64"
       }`}
     >
@@ -62,7 +62,7 @@ const NavBar = () => {
 
         {/* showing file uploading pop up box */}
         {isShowPopUp && (
-          <div className="fixed inset-0 flex items-center justify-center bg-white/40 backdrop-blur-sm z-50 h-dvh w-dvw">
+          <div className="fixed inset-0  flex items-center justify-center bg-white/40 backdrop-blur-sm z-50 h-dvh w-dvw">
             {/* Note: Ensure UploadFilePopUp has its own background/styling */}
             <UploadFilePopUp setIsShowPopUp={setIsShowPopUp} />
           </div>

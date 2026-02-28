@@ -8,7 +8,7 @@ const UploadFilePopUp = ({
   setIsShowPopUp: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [file, setFile] = useState<File | null>(null);
-  const [title, setTitle] = useState<string>("");
+  const [name, setName] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -30,7 +30,7 @@ const UploadFilePopUp = ({
     try {
       setLoading(true);
       const formData = new FormData();
-      formData.append("title", title);
+      formData.append("name", name);
       formData.append("file", file);
 
       await connection.post("/uploadFile/upload", formData, {
@@ -39,7 +39,7 @@ const UploadFilePopUp = ({
 
       alert("Upload successful!");
       setFile(null);
-      setTitle("");
+      setName("");
     } catch (error) {
       console.error("Error uploading file:", error);
     } finally {
@@ -48,7 +48,7 @@ const UploadFilePopUp = ({
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen px-4">
+    <div className="flex  items-center justify-center min-h-screen px-4">
       {/* Modal Container */}
       <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl p-10 relative animate-fadeIn">
         {/* Close Button */}
@@ -67,12 +67,12 @@ const UploadFilePopUp = ({
           {/* Title Input */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Title
+              Name
             </label>
             <input
               required
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               type="text"
               placeholder="Enter file title..."
               className="w-full px-5 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-900 focus:outline-none text-lg"

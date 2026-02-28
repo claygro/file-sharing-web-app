@@ -4,7 +4,7 @@ import { v4 as uuid } from "uuid";
 import cloudinary from "../cloudinary.js";
 class FileUploadController {
   async fileUpload(req, res) {
-    let { title } = req.body;
+    let { name } = req.body;
     const file = req.file;
     const { userid } = req.user;
     //to find the extension of file.
@@ -20,7 +20,7 @@ class FileUploadController {
       });
       const response = await FileUploadModel.create({
         userId: userid,
-        title: title,
+        name: name,
         originalFileName: result.original_filename,
         fileType: extensionName,
         sizeOfFileInKb: sizeInKb,

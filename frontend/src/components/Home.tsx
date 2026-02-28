@@ -8,7 +8,7 @@ const Home = () => {
     _id: string;
     sizeOfFileInKb: number;
     sizeOfFileInMb: number;
-    title: string;
+    name: string;
     createdAt: string;
     fileType: string;
     fileId: string;
@@ -49,11 +49,11 @@ const Home = () => {
     }
   };
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="h-dvh  bg-gray-50">
       {/* Topbar */}
 
       {/* Main */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-6">
           <div className="flex gap-x-4 items-center">
             <h1 className="text-xl font-semibold text-gray-900">My Files</h1>
@@ -67,7 +67,7 @@ const Home = () => {
         </div>
 
         {/* Table */}
-        <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+        <div className="bg-white border border-gray-200 rounded-xl overflow-auto">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead className="border-b border-gray-100 bg-gray-50">
@@ -94,7 +94,7 @@ const Home = () => {
                       {/* Name */}
                       <td className="py-4 px-5">
                         <p className="font-medium text-gray-900 truncate max-w-[200px]">
-                          {file.title}
+                          {file.name}
                         </p>
                         <p className="text-xs text-gray-400 sm:hidden mt-1 uppercase">
                           {file.fileType}
