@@ -17,6 +17,7 @@ const Home = () => {
 
   const [fileData, setFileData] = useState<FileDataType[]>();
   const [isFileShow, setIsFileShow] = useState<boolean>(false);
+  const [fileId, setFileId] = useState<string>("");
   async function retriveFileData() {
     try {
       const fileResponse = await connection.get("/retrive/file");
@@ -38,6 +39,7 @@ const Home = () => {
     try {
       console.log(fileId);
       const response = await connection.get(`/fileVault/file/${fileId}`);
+      setFileId(fileId);
       // console.log(
       //   window.open(`http://localhost:8000/fileVault/file/${fileId}`, "_blank"),
       // );
@@ -72,10 +74,7 @@ const Home = () => {
         {isFileShow && (
           <div>
             {fileData && fileData.length > 0 && (
-              <FilePreviewPopUp
-                setIsFileShow={setIsFileShow}
-                file={fileData[0]}
-              />
+              <FilePreviewPopUp setIsFileShow={setIsFileShow} fileId={fileId} />
             )}
           </div>
         )}

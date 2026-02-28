@@ -1,16 +1,27 @@
 import React from "react";
 
-interface FileDataType {
-  name: string;
-}
-
 interface FilePreviewPopUpProps {
   setIsFileShow: React.Dispatch<React.SetStateAction<boolean>>;
-  file: FileDataType;
+  fileId: string;
 }
-const FilePreviewPopUp = ({ setIsFileShow, file }: FilePreviewPopUpProps) => {
-  console.log(file);
-  return <div>FilePreviewPopUp</div>;
+const FilePreviewPopUp = ({ setIsFileShow, fileId }: FilePreviewPopUpProps) => {
+  console.log(setIsFileShow);
+  console.log(fileId);
+  return (
+    <div>
+      {fileId ? (
+        <a
+          href={`http://localhost:8000/fileVault/file/${fileId}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          {`http://localhost:8000/fileVault/file/${fileId}`}
+        </a>
+      ) : (
+        "Loading..."
+      )}
+    </div>
+  );
 };
 
 export default FilePreviewPopUp;
