@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import connection from "../config/connection.config";
 
 import { RefreshCcw } from "lucide-react";
+import FilePreviewPopUp from "./FilePreviewPopUp";
 
 const Home = () => {
   interface FileDataType {
@@ -15,7 +16,7 @@ const Home = () => {
   }
 
   const [fileData, setFileData] = useState<FileDataType[]>();
-
+  const [isFileShow, setIsFileShow] = useState<boolean>(false);
   async function retriveFileData() {
     try {
       const fileResponse = await connection.get("/retrive/file");
@@ -33,12 +34,14 @@ const Home = () => {
     retriveFileData();
   };
   const handleFileClick = async (fileId: string) => {
+    setIsFileShow(true);
     try {
       console.log(fileId);
       const response = await connection.get(`/fileVault/file/${fileId}`);
-      console.log(
-        window.open(`http://localhost:8000/fileVault/file/${fileId}`, "_blank"),
-      );
+      // console.log(
+      //   window.open(`http://localhost:8000/fileVault/file/${fileId}`, "_blank"),
+      // );
+
       console.log(response);
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -49,7 +52,7 @@ const Home = () => {
     }
   };
   return (
-    <div className="h-dvh  bg-gray-50">
+    <div className="h-dvh  bg-gray-50 overflow-y-auto">
       {/* Topbar */}
 
       {/* Main */}
@@ -65,7 +68,17 @@ const Home = () => {
             </button>
           </div>
         </div>
-
+        {/* file show popup */}
+        {isFileShow && (
+          <div>
+            {fileData && fileData.length > 0 && (
+              <FilePreviewPopUp
+                setIsFileShow={setIsFileShow}
+                file={fileData[0]}
+              />
+            )}
+          </div>
+        )}
         {/* Table */}
         <div className="bg-white border border-gray-200 rounded-xl overflow-auto">
           <div className="overflow-x-auto">
