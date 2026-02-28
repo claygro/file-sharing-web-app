@@ -1,7 +1,6 @@
 import FileUploadModel from "../models/fileUpload.models.js";
 import path from "path";
 import { v4 as uuid } from "uuid";
-import cloudinary from "../cloudinary.js";
 class FileUploadController {
   async fileUpload(req, res) {
     let { name } = req.body;
@@ -14,19 +13,15 @@ class FileUploadController {
     let sizeInMb = (file.size / (1024 * 1024)).toFixed(4);
     const fileId = uuid();
     try {
-      const result = await cloudinary.uploader.upload(file.path, {
-        resource_type: "auto",
-        folder: "fileVault",
-      });
       const response = await FileUploadModel.create({
         userId: userid,
         name: name,
-        originalFileName: result.original_filename,
+        originalFileName: file.originalname,
         fileType: extensionName,
         sizeOfFileInKb: sizeInKb,
         fileId,
         sizeOfFileInMb: sizeInMb,
-        secure_url: result.secure_url,
+        secure_url: file.path, // multer-cloudinary already gives this
       });
 
       res.status(200).json({
