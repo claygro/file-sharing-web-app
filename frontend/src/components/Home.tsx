@@ -15,7 +15,8 @@ const Home = () => {
     fileId: string;
   }
 
-  const [fileData, setFileData] = useState<FileDataType[]>();
+  const [fileData, setFileData] = useState<FileDataType[] | null>(null);
+
   const [isFileShow, setIsFileShow] = useState<boolean>(false);
   const [fileId, setFileId] = useState<string>("");
   async function retriveFileData() {
