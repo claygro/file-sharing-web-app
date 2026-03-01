@@ -79,6 +79,7 @@ const Home = () => {
                 setIsFileShow={setIsFileShow}
                 fileId={fileId}
                 file={fileData}
+                setFileId={setFileId}
               />
             )}
           </div>

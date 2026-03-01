@@ -102,7 +102,7 @@ const UploadFilePopUp = ({
             <p className="mt-5 text-lg font-medium text-gray-700">
               {file ? file.name : "Drag & Drop file here or click to browse"}
             </p>
-            <p className="text-sm text-gray-400 mt-1">Max 10MB</p>
+            <p className="text-sm text-gray-400 mt-1">Max 50MB</p>
           </div>
 
           {/* File Preview */}

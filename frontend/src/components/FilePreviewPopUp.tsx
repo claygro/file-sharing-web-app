@@ -13,12 +13,14 @@ interface FileData {
 
 interface FilePreviewPopUpProps {
   setIsFileShow: React.Dispatch<React.SetStateAction<boolean>>;
+  setFileId: React.Dispatch<React.SetStateAction<string>>;
   fileId: string;
   file: FileData[];
 }
 
 const FilePreviewPopUp = ({
   setIsFileShow,
+  setFileId,
   fileId,
   file,
 }: FilePreviewPopUpProps) => {
@@ -28,16 +30,31 @@ const FilePreviewPopUp = ({
     // Overlay
     <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50">
       {/* Modal container */}
-      <div className="bg-white rounded-xl shadow-xl max-w-xl h-auto w-full p-6 flex flex-col gap-4">
+      <div
+        key={fileId}
+        className="bg-white rounded-xl shadow-xl max-w-xl h-auto w-full p-6 flex flex-col gap-4"
+      >
         {/* File preview */}
         <div className="flex justify-center items-center h-64 bg-gray-100 rounded-md overflow-auto">
-          {selectedFile ? (
+          {!selectedFile ? (
+            "Loading"
+          ) : selectedFile ? (
             selectedFile.fileType === "pdf" ? (
               <embed
                 src={`${fileUrl}/${fileId}`}
                 type="application/pdf"
                 className="w-full h-full"
               />
+            ) : selectedFile.fileType === "mp4" ? (
+              <video
+                src={`${fileUrl}/${fileId}`}
+                controls
+                className="max-h-full max-w-full object-contain"
+              />
+            ) : selectedFile.fileType === "docx" ? (
+              <div className="flex flex-col items-center justify-center gap-3 text-center">
+                <p className="text-gray-600">Preview not available for DOCX</p>
+              </div>
             ) : (
               <img
                 src={`${fileUrl}/${fileId}`}
@@ -60,14 +77,19 @@ const FilePreviewPopUp = ({
               rel="noreferrer"
               className="text-blue-600 underline break-all"
             >
-              {`${fileUrl}/${fileId}`}
+              {selectedFile.fileType !== "docx"
+                ? `${fileUrl}/${fileId}`
+                : "Download the file"}
             </a>
           </>
         )}
 
         {/* Done button */}
         <button
-          onClick={() => setIsFileShow(false)}
+          onClick={() => {
+            setFileId("");
+            setIsFileShow(false);
+          }}
           className="mt-2 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
         >
           Done
