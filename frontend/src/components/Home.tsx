@@ -75,7 +75,11 @@ const Home = () => {
         {isFileShow && (
           <div>
             {fileData && fileData.length > 0 && (
-              <FilePreviewPopUp setIsFileShow={setIsFileShow} fileId={fileId} />
+              <FilePreviewPopUp
+                setIsFileShow={setIsFileShow}
+                fileId={fileId}
+                file={fileData}
+              />
             )}
           </div>
         )}
