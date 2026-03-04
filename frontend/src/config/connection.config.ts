@@ -1,6 +1,6 @@
 import axios from "axios";
 const connection = axios.create({
-  baseURL: import.meta.env.VITE_SERVER_SIDE_CONNECTION_URL_signup,
+  baseURL: "https://file-sharing-web-app-backend-orcx.onrender.com",
   withCredentials: true,
 });
 export default connection;
