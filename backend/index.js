@@ -10,10 +10,8 @@ import fileUrlRoutes from "./src/routes/fileUrl.routes.js";
 const app = express();
 app.use(
   cors({
-    origin: [
-      process.env.CLIENT_SIDE_URL,
-      "https://file-sharing-web-app-frontend.onrender.com",
-    ],
+    origin: "https://file-sharing-web-app-frontend.onrender.com",
+
     credentials: true,
   }),
 );
