@@ -1,2 +1,2 @@
-const fileUrl = "http://localhost:8000/fileVault/file";
+const fileUrl = "https://filemanagementbackend.vercel.app/fileVault/file";
 export default fileUrl;
