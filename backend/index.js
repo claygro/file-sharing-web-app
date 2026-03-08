@@ -7,10 +7,11 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import fileRetriveRoutes from "./src/routes/fileRetrive.routes.js";
 import fileUrlRoutes from "./src/routes/fileUrl.routes.js";
+import profileRoutes from "./src/routes/profile.routes.js";
 const app = express();
 app.use(
   cors({
-    origin: "https://file-sharing-web-app-frontend.onrender.com",
+    origin: "http://localhost:5173",
 
     credentials: true,
   }),
@@ -22,6 +23,7 @@ app.use("/auth", authRoutes);
 app.use("/uploadFile", fileRoutes);
 app.use("/retrive", fileRetriveRoutes);
 app.use("/fileVault", fileUrlRoutes);
+app.use("/profile", profileRoutes);
 const port = process.env.PORT;
 app.listen(port, async () => {
   try {

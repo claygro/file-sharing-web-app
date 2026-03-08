@@ -69,19 +69,23 @@ const FilePreviewPopUp = ({
 
         {/* Link */}
         {selectedFile && (
-          <>
-            <h1>Link:</h1>
-            <a
-              href={`${fileUrl}/${fileId}`}
-              target="_blank"
-              rel="noreferrer"
-              className="text-blue-600 underline break-all"
-            >
-              {selectedFile.fileType !== "docx"
-                ? `${fileUrl}/${fileId}`
-                : "Download the file"}
+          <div className="mt-4 p-4 border rounded-xl shadow-sm bg-gray-50 flex items-center justify-between">
+            <p className="text-sm text-gray-700 truncate max-w-xs">
+              {selectedFile.name}
+            </p>
+
+            <a href={`${fileUrl}/${fileId}`} target="_blank" rel="noreferrer">
+              {selectedFile.fileType !== "docx" ? (
+                <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition">
+                  Open File
+                </button>
+              ) : (
+                <button className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition">
+                  Download
+                </button>
+              )}
             </a>
-          </>
+          </div>
         )}
 
         {/* Done button */}

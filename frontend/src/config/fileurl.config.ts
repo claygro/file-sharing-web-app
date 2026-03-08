@@ -1,3 +1,2 @@
-const fileUrl =
-  "https://file-sharing-web-app-backend-orcx.onrender.com/fileVault/file";
+const fileUrl = "http://localhost:8000/fileVault/file";
 export default fileUrl;
