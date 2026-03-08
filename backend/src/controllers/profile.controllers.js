@@ -2,9 +2,9 @@ import UserModel from "../models/user.models.js";
 
 class Profile {
   async profile(req, res) {
-    const { id } = req.params;
+    const { userid } = req.user;
     try {
-      const response = await UserModel.findOne({ id });
+      const response = await UserModel.findOne({ _id: userid });
       if (!response) {
         return res.status(404).json({ message: "User doesnot exist" });
       }

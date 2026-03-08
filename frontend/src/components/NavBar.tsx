@@ -11,7 +11,6 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import UploadFilePopUp from "./UploadFilePopUp";
-
 const NavBar = () => {
   const [isShowPopUp, setIsShowPopUp] = useState<boolean>(false);
   const [isCollapsed, setIsCollapsed] = useState(false); // UI State for toggle

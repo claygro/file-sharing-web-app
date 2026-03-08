@@ -1,7 +1,33 @@
+import { useState, useEffect } from "react";
 import demoImage from "../assets/images.jpeg";
 import { Search, File } from "lucide-react";
-
+import ProfilePopUp from "./ProfilePopUp";
+import connection from "../config/connection.config";
 const SearchBox = () => {
+  const [isProfilePopUpShow, setIsProfilePopUpShow] = useState<boolean>(false);
+  interface AvatarType {
+    url: string;
+  }
+  interface ProfileType {
+    avatar: AvatarType;
+  }
+
+  const [profileData, setPofileData] = useState<ProfileType | null>(null);
+  async function getUserProfile() {
+    try {
+      const response = await connection.get("/profile/profile");
+      setPofileData(response.data);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.log(`Error in fetching user profile ${error}`);
+      } else {
+        console.log(`Error in fetching user profile ${error}`);
+      }
+    }
+  }
+  useEffect(() => {
+    getUserProfile();
+  }, []);
   return (
     <>
       <header className="sticky top-0  bg-white border-b border-gray-200">
@@ -32,11 +58,23 @@ const SearchBox = () => {
           </div>
 
           {/* Profile */}
-          <img
-            src={demoImage}
-            alt="Profile"
-            className="w-9 h-9 rounded-full object-cover border border-gray-200"
-          />
+          <div className="relative ">
+            {/* Profile Button */}
+            <button onClick={() => setIsProfilePopUpShow(!isProfilePopUpShow)}>
+              <img
+                src={profileData?.avatar?.url}
+                alt="Profile"
+                className="w-9 h-9 rounded-full object-cover border border-gray-200"
+              />
+            </button>
+
+            {/* Popup */}
+            {isProfilePopUpShow && (
+              <div className="absolute right-0 mt-2 z-50">
+                <ProfilePopUp />
+              </div>
+            )}
+          </div>
         </div>
       </header>
     </>
