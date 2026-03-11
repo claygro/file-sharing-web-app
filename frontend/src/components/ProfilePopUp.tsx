@@ -1,7 +1,14 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import connection from "../config/connection.config";
 import { LogOut, Plus } from "lucide-react"; // Optional: icons for better accuracy
-const ProfilePopUp = () => {
+import { useNavigate } from "react-router-dom";
+const ProfilePopUp = ({
+  setIsProfilePopUpShow,
+  isProfilePopUpShow,
+}: {
+  setIsProfilePopUpShow: React.Dispatch<React.SetStateAction<boolean>>;
+  isProfilePopUpShow: boolean;
+}) => {
   interface AvatarType {
     url: string;
   }
@@ -11,7 +18,7 @@ const ProfilePopUp = () => {
     email: string;
     password: string;
   }
-
+  const navigate = useNavigate();
   const [profileData, setPofileData] = useState<ProfileType | null>(null);
   async function getUserProfile() {
     try {
@@ -33,8 +40,6 @@ const ProfilePopUp = () => {
       <div className="flex items-center justify-center p-4">
         {/* Main Container */}
         <div className="w-[360px] bg-[#eef3f9] rounded-[40px] p-6 shadow-xl font-sans relative">
-    
-
           <div className="flex flex-col items-center">
             {/* Email */}
             <p className="text-sm font-medium text-gray-700 mb-4">
@@ -58,7 +63,13 @@ const ProfilePopUp = () => {
             {/* Action Buttons */}
             <div className="grid grid-cols-2 gap-2 w-full">
               {/* Change Profile */}
-              <button className="flex items-center justify-center gap-2 bg-white py-4 rounded-l-3xl rounded-r-lg hover:bg-gray-50 transition-colors">
+              <button
+                onClick={() => {
+                  (navigate("/layout/profile"),
+                    setIsProfilePopUpShow(!isProfilePopUpShow));
+                }}
+                className="flex items-center justify-center gap-2 bg-white py-4 rounded-l-3xl rounded-r-lg hover:bg-gray-50 transition-colors"
+              >
                 <Plus size={20} className="text-[#0b57d0]" />
                 <span className="text-sm font-medium text-gray-700">
                   Change Profile

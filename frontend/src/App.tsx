@@ -9,6 +9,7 @@ import History from "./components/History";
 import Recents from "./components/Recents";
 import Settings from "./components/Settings";
 import { FileRetriveProvider } from "./context/fileRetriveContext";
+import Profile from "./components/Profile";
 function App() {
   return (
     <>
@@ -25,6 +26,7 @@ function App() {
               <Route path="history" element={<History />} />
               <Route path="recents" element={<Recents />} />
               <Route path="setting" element={<Settings />} />
+              <Route path="profile" element={<Profile />} />
             </Route>
           </Routes>
         </FileRetriveProvider>

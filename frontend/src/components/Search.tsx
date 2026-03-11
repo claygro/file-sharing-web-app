@@ -60,7 +60,11 @@ const SearchBox = () => {
           {/* Profile */}
           <div className="relative ">
             {/* Profile Button */}
-            <button onClick={() => setIsProfilePopUpShow(!isProfilePopUpShow)}>
+            <button
+              onClick={() => {
+                setIsProfilePopUpShow(!isProfilePopUpShow);
+              }}
+            >
               <img
                 src={profileData?.avatar?.url}
                 alt="Profile"
@@ -71,7 +75,10 @@ const SearchBox = () => {
             {/* Popup */}
             {isProfilePopUpShow && (
               <div className="absolute right-0 mt-2 z-50">
-                <ProfilePopUp />
+                <ProfilePopUp
+                  setIsProfilePopUpShow={setIsProfilePopUpShow}
+                  isProfilePopUpShow={isProfilePopUpShow}
+                />
               </div>
             )}
           </div>
