@@ -1,7 +1,14 @@
-import { useState, type ChangeEvent, type FormEvent, useRef } from "react";
+import {
+  useState,
+  type ChangeEvent,
+  type FormEvent,
+  useRef,
+  useContext,
+} from "react";
 import { X, UploadCloud } from "lucide-react";
 import connection from "../config/connection.config";
 import type { Dispatch, SetStateAction } from "react";
+import { FileContext } from "../context/fileRetriveContext";
 const UploadFilePopUp = ({
   setIsShowPopUp,
 }: {
@@ -11,7 +18,7 @@ const UploadFilePopUp = ({
   const [name, setName] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-
+  const { retriveFileData } = useContext(FileContext);
   const handleChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files?.[0];
     if (selected) setFile(selected);
@@ -38,6 +45,7 @@ const UploadFilePopUp = ({
       });
 
       alert("Upload successful!");
+      retriveFileData();
       setFile(null);
       setName("");
     } catch (error) {

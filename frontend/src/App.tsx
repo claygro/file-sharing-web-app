@@ -8,22 +8,26 @@ import Share from "./components/Share";
 import History from "./components/History";
 import Recents from "./components/Recents";
 import Settings from "./components/Settings";
-
+import { FileRetriveProvider } from "./context/fileRetriveContext";
 function App() {
   return (
     <>
       <Router>
-        <Routes>
-          <Route path="/" element={<Signup />} />
-          <Route path="/layout" element={<LayOut />}>
-            <Route index element={<Home />} />
-            <Route path="mydrive" element={<MyDrive />} />
-            <Route path="share" element={<Share />} />
-            <Route path="history" element={<History />} />
-            <Route path="recents" element={<Recents />} />
-            <Route path="setting" element={<Settings />} />
-          </Route>
-        </Routes>
+        <FileRetriveProvider>
+          <Routes>
+            <Route path="/" element={<Signup />} />
+
+            <Route path="/layout" element={<LayOut />}>
+              <Route index element={<Home />} />
+
+              <Route path="mydrive" element={<MyDrive />} />
+              <Route path="share" element={<Share />} />
+              <Route path="history" element={<History />} />
+              <Route path="recents" element={<Recents />} />
+              <Route path="setting" element={<Settings />} />
+            </Route>
+          </Routes>
+        </FileRetriveProvider>
       </Router>
     </>
   );

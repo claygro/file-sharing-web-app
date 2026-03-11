@@ -1,33 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import connection from "../config/connection.config";
 
 import { RefreshCcw } from "lucide-react";
 import FilePreviewPopUp from "./FilePreviewPopUp";
-
+import { FileContext } from "../context/fileRetriveContext";
 const Home = () => {
-  interface FileDataType {
-    _id: string;
-    sizeOfFileInKb: number;
-    sizeOfFileInMb: number;
-    name: string;
-    createdAt: string;
-    fileType: string;
-    fileId: string;
-  }
-
-  const [fileData, setFileData] = useState<FileDataType[] | null>(null);
-
   const [isFileShow, setIsFileShow] = useState<boolean>(false);
   const [fileId, setFileId] = useState<string>("");
-  async function retriveFileData() {
-    try {
-      const fileResponse = await connection.get("/retrive/file");
-      setFileData(fileResponse.data);
-    } catch (error: unknown) {
-      console.log(`Error retrieving file: ${error}`);
-    }
-  }
-
+  const { fileData, retriveFileData } = useContext(FileContext);
   useEffect(() => {
     retriveFileData();
   }, []);
@@ -103,7 +83,7 @@ const Home = () => {
                 {fileData
                   ?.slice()
                   .reverse()
-                  ?.map((file) => (
+                  ?.map((file: any) => (
                     <tr
                       key={file._id}
                       className="border-b border-gray-100 last:border-none hover:bg-gray-50 transition"
