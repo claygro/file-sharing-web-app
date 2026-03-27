@@ -1,6 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, type ChangeEvent } from "react";
 import connection from "../config/connection.config";
+import Cropper from "react-cropper";
 import type { ReactCropperElement } from "react-cropper";
+import "cropperjs/dist/cropper.css";
 
 interface AvatarType {
   url: string;
@@ -16,14 +18,18 @@ interface ProfileUpdating {
   userName: string;
   email: string;
   password: string;
-  avatar: string;
 }
 const Profile = () => {
   const cropRef = useRef<ReactCropperElement>(null);
+  const avatarUpdateRef = useRef<HTMLInputElement>(null);
   const [profileData, setProfileData] = useState<ProfileType | null>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [userUpdatedData, setUserUpdatedData] =
-    useState<ProfileUpdating | null>(null);
+  const [croppedImage, setCroppedImage] = useState<Blob | null | string>(null);
+  const [userUpdatedData, setUserUpdatedData] = useState<ProfileUpdating>({
+    userName: "",
+    email: "",
+    password: "",
+  });
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -39,30 +45,156 @@ const Profile = () => {
   useEffect(() => {
     getUserProfile();
   }, []);
-  const handleUpdate = async () => {
+  const handleUpdate = async (e: React.ChangeEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    // 👉 If NOT editing → just enable edit mode
+    if (!isEditing) {
+      setIsEditing(true);
+
+      // preload data for inputs
+      if (profileData) {
+        setUserUpdatedData({
+          userName: profileData.userName,
+          email: profileData.email,
+          password: "",
+        });
+      }
+
+      return; // ⛔ STOP here
+    }
     try {
-      setIsEditing(!isEditing);
+      const userUpdateData = new FormData();
+      userUpdateData.append("userName", userUpdatedData.userName);
+      userUpdateData.append("email", userUpdatedData.email);
+      userUpdateData.append("password", userUpdatedData.password);
+      if (croppedImage) {
+        userUpdateData.append("avatar", croppedImage);
+      }
+      await connection.put("/profile/update", userUpdateData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      setUserUpdatedData({ userName: "", email: "", password: "" });
+      setCroppedImage(null);
+      setPreviewUrl(null);
     } catch (error: unknown) {
       if (error instanceof Error) {
-        console.log(`Error in updating profile ${error}`);
+        console.log(`Error in updating the user profile`);
       } else {
-        console.log(`Error in updating profile ${error}`);
+        console.log(`Error in updating the user profile`);
       }
+    } finally {
+      setIsLoading(false);
     }
+  };
+  const handleImageClick = () => {
+    // Manually trigger the click on the hidden input
+    avatarUpdateRef?.current?.click();
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUserUpdatedData({
+      ...userUpdatedData,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const handleImageSelect = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => setImageSrc(reader.result as string);
+    reader.readAsDataURL(file);
+  };
+  const handleCrop = async () => {
+    const cropper = cropRef.current?.cropper;
+    if (!cropper) return;
+
+    const canvas = cropper.getCroppedCanvas({ width: 400, height: 400 });
+
+    canvas.toBlob(
+      (blob) => {
+        if (blob) {
+          // ✅ ONLY FIX: convert Blob → File
+          const file = new File([blob], "avatar.jpg", {
+            type: "image/jpeg",
+          });
+
+          setCroppedImage(file);
+          setPreviewUrl(URL.createObjectURL(file));
+          setImageSrc(null);
+        }
+      },
+      "image/jpeg",
+      0.9,
+    );
   };
   return (
     <div className="min-h-screen bg-white p-8">
+      {imageSrc && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+          <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+            <div className="p-4 border-b border-gray-100 flex justify-between items-center">
+              <h3 className="font-semibold text-gray-800">Adjust your photo</h3>
+              <button
+                onClick={() => setImageSrc(null)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="p-6">
+              <Cropper
+                src={imageSrc}
+                style={{ height: 400, width: "100%" }}
+                aspectRatio={1}
+                viewMode={1}
+                guides={true}
+                ref={cropRef}
+              />
+              <div className="mt-6 flex gap-3">
+                <button
+                  onClick={() => setImageSrc(null)}
+                  className="flex-1 px-4 py-2 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleCrop}
+                  className="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="max-w-5xl mx-auto">
         {/* Header Section */}
         <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between mb-10">
           <div className="flex items-center gap-4">
             <div className="w-10 h-10 sm:w-20 sm:h-20  rounded-full overflow-hidden shadow-sm">
-              <img
-                className="w-full h-full object-cover"
-                src={profileData?.avatar?.url}
-                alt="Profile"
-              />
-              {isEditing && <input type="file" />}
+              {isEditing ? (
+                <>
+                  <img
+                    onClick={handleImageClick}
+                    className="w-full h-full object-cover"
+                    src={previewUrl || profileData?.avatar?.url}
+                    alt="Profile"
+                  />
+                  <input
+                    type="file"
+                    className="hidden"
+                    onChange={handleImageSelect}
+                    ref={avatarUpdateRef}
+                  />
+                </>
+              ) : (
+                <img
+                  className="w-full h-full object-cover"
+                  src={profileData?.avatar?.url}
+                  alt="Profile"
+                />
+              )}
             </div>
             <div>
               <h1 className="text-sm sm:text-xl font-bold text-gray-900">
@@ -73,12 +205,21 @@ const Profile = () => {
               </p>
             </div>
           </div>
-          <button
-            onClick={handleUpdate}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 sm:px-6 sm:py-2 rounded-lg text-sm sm:text-xl font-medium transition shadow-sm"
-          >
-            {isEditing ? "Update" : "Edit"}
-          </button>
+          {isLoading ? (
+            <button
+              onClick={handleUpdate}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 sm:px-6 sm:py-2 rounded-lg text-sm sm:text-xl font-medium transition shadow-sm"
+            >
+              Saving...
+            </button>
+          ) : (
+            <button
+              onClick={handleUpdate}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 sm:px-6 sm:py-2 rounded-lg text-sm sm:text-xl font-medium transition shadow-sm"
+            >
+              {isEditing ? "save" : "Edit"}
+            </button>
+          )}
         </div>
 
         {/* Form Grid Section */}
@@ -89,7 +230,13 @@ const Profile = () => {
               Username
             </label>
             {isEditing ? (
-              <input type="text" value={profileData?.userName} />
+              <input
+                className="bg-gray-50 border-none rounded-lg p-3 text-gray-500 focus:ring-0"
+                type="text"
+                name="userName"
+                onChange={handleChange}
+                value={userUpdatedData?.userName}
+              />
             ) : (
               <input
                 type="text"
@@ -106,7 +253,13 @@ const Profile = () => {
               Email Address
             </label>
             {isEditing ? (
-              <input type="email" value={profileData?.email} />
+              <input
+                className="bg-gray-50 border-none rounded-lg p-3 text-gray-500 focus:ring-0"
+                type="email"
+                name="email"
+                value={userUpdatedData?.email}
+                onChange={handleChange}
+              />
             ) : (
               <input
                 type="text"
@@ -123,13 +276,19 @@ const Profile = () => {
               Password
             </label>
             {isEditing ? (
-              <input type="password" value="............" />
+              <input
+                className="bg-gray-50 border-none rounded-lg p-3 text-gray-500 focus:ring-0"
+                type="password"
+                name="password"
+                value={userUpdatedData?.password}
+                onChange={handleChange}
+              />
             ) : (
               <input
                 type="password"
                 readOnly
                 className="bg-gray-50 border-none rounded-lg p-3 text-gray-500 focus:ring-0"
-                value="............"
+                value="........."
               />
             )}
           </div>

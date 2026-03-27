@@ -19,10 +19,10 @@ class Profile {
     const { userid } = req.user;
     const { userName, email, password } = req.body;
     try {
-      const updateFields = { userName, email };//contains all the field which are going to update.
+      const updateFields = { userName, email }; //contains all the field which are going to update.
 
       if (req.file) {
-        updateFields.avatarData = {
+        updateFields.avatar = {
           url: req.file.path, //cloudinary url
           publicId: req.file.filename,
         };
@@ -48,7 +48,7 @@ class Profile {
       const userToken = jwt.sign(
         {
           userid: updatedUser._id,
-          avatar: updatedUser.avatarData,
+          avatar: updatedUser.avatar,
           username: updatedUser.userName,
           email: updatedUser.email,
         },
