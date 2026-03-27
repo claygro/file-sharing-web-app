@@ -3,7 +3,7 @@ import connection from "../config/connection.config";
 import Cropper from "react-cropper";
 import type { ReactCropperElement } from "react-cropper";
 import "cropperjs/dist/cropper.css";
-
+import toast, { Toaster } from "react-hot-toast";
 interface AvatarType {
   url: string;
 }
@@ -107,7 +107,7 @@ const Profile = () => {
       window.location.reload();
     } catch (error: unknown) {
       console.error(`Error in updating:`, error);
-      alert("Update failed. please try again.");
+      toast.error("Update failed. please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -155,6 +155,7 @@ const Profile = () => {
   };
   return (
     <div className="min-h-screen bg-white p-8">
+      <Toaster position="top-center" />
       {imageSrc && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
           <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
@@ -203,7 +204,7 @@ const Profile = () => {
                 <>
                   <img
                     onClick={handleImageClick}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover cursor-pointer"
                     src={previewUrl || profileData?.avatar?.url}
                     alt="Profile"
                   />
