@@ -45,7 +45,7 @@ const Profile = () => {
   useEffect(() => {
     getUserProfile();
   }, []);
-  const handleUpdate = async (e: React.ChangeEvent<HTMLButtonElement>) => {
+  const handleUpdate = async (e: React.SubmitEvent<HTMLButtonElement>) => {
     e.preventDefault();
     // 👉 If NOT editing → just enable edit mode
     if (!isEditing) {
@@ -60,28 +60,54 @@ const Profile = () => {
         });
       }
 
-      return; // ⛔ STOP here
+      return; //STOP here
     }
+
+    if (!isEditing) {
+      setIsEditing(true);
+      if (profileData) {
+        setUserUpdatedData({
+          userName: profileData.userName,
+          email: profileData.email,
+          password: "", // Leave blank for security
+        });
+      }
+      return;
+    }
+
+    // 2. Perform Update
+    setIsLoading(true); // START LOADING HERE
     try {
       const userUpdateData = new FormData();
-      userUpdateData.append("userName", userUpdatedData.userName);
-      userUpdateData.append("email", userUpdatedData.email);
-      userUpdateData.append("password", userUpdatedData.password);
+      if (userUpdatedData.userName) {
+        userUpdateData.append("userName", userUpdatedData.userName);
+      }
+      if (userUpdatedData.password) {
+        userUpdateData.append("email", userUpdatedData.email);
+      }
+
+      if (userUpdatedData.password) {
+        userUpdateData.append("password", userUpdatedData.password);
+      }
+
       if (croppedImage) {
         userUpdateData.append("avatar", croppedImage);
       }
-      await connection.put("/profile/update", userUpdateData, {
+
+      const response = await connection.put("/profile/update", userUpdateData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      setUserUpdatedData({ userName: "", email: "", password: "" });
+
+      setProfileData(response.data);
+
+      setIsEditing(false);
       setCroppedImage(null);
       setPreviewUrl(null);
+      setUserUpdatedData({ userName: "", email: "", password: "" });
+      window.location.reload();
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.log(`Error in updating the user profile`);
-      } else {
-        console.log(`Error in updating the user profile`);
-      }
+      console.error(`Error in updating:`, error);
+      alert("Update failed. please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -217,7 +243,7 @@ const Profile = () => {
               onClick={handleUpdate}
               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 sm:px-6 sm:py-2 rounded-lg text-sm sm:text-xl font-medium transition shadow-sm"
             >
-              {isEditing ? "save" : "Edit"}
+              {isLoading ? "Saving..." : isEditing ? "Save" : "Edit"}
             </button>
           )}
         </div>

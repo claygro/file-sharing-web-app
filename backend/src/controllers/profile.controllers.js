@@ -61,6 +61,7 @@ class Profile {
         sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
         maxAge: 30 * 24 * 60 * 60 * 1000,
       });
+      res.status(200).json({ message: "Update successfully" });
     } catch (error) {
       res.status(500).json({ message: `Error in profile update ${error}` });
     }
