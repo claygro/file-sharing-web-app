@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import connection from "../config/connection.config";
+import type { ReactCropperElement } from "react-cropper";
 
 interface AvatarType {
   url: string;
@@ -11,10 +12,21 @@ interface ProfileType {
   email: string;
   createdAt: string;
 }
-
+interface ProfileUpdating {
+  userName: string;
+  email: string;
+  password: string;
+  avatar: string;
+}
 const Profile = () => {
+  const cropRef = useRef<ReactCropperElement>(null);
   const [profileData, setProfileData] = useState<ProfileType | null>(null);
-
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [userUpdatedData, setUserUpdatedData] =
+    useState<ProfileUpdating | null>(null);
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   async function getUserProfile() {
     try {
       const response = await connection.get("/profile/profile");
@@ -27,8 +39,17 @@ const Profile = () => {
   useEffect(() => {
     getUserProfile();
   }, []);
-  console.log(profileData);
-
+  const handleUpdate = async () => {
+    try {
+      setIsEditing(!isEditing);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.log(`Error in updating profile ${error}`);
+      } else {
+        console.log(`Error in updating profile ${error}`);
+      }
+    }
+  };
   return (
     <div className="min-h-screen bg-white p-8">
       <div className="max-w-5xl mx-auto">
@@ -41,6 +62,7 @@ const Profile = () => {
                 src={profileData?.avatar?.url}
                 alt="Profile"
               />
+              {isEditing && <input type="file" />}
             </div>
             <div>
               <h1 className="text-sm sm:text-xl font-bold text-gray-900">
@@ -51,8 +73,11 @@ const Profile = () => {
               </p>
             </div>
           </div>
-          <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 sm:px-6 sm:py-2 rounded-lg text-sm sm:text-xl font-medium transition shadow-sm">
-            Edit
+          <button
+            onClick={handleUpdate}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 sm:px-6 sm:py-2 rounded-lg text-sm sm:text-xl font-medium transition shadow-sm"
+          >
+            {isEditing ? "Update" : "Edit"}
           </button>
         </div>
 
@@ -63,12 +88,16 @@ const Profile = () => {
             <label className="text-sm font-semibold text-gray-700">
               Username
             </label>
-            <input
-              type="text"
-              readOnly
-              className="bg-gray-50 border-none rounded-lg p-3 text-gray-500 focus:ring-0"
-              value={profileData?.userName || "Loading..."}
-            />
+            {isEditing ? (
+              <input type="text" value={profileData?.userName} />
+            ) : (
+              <input
+                type="text"
+                readOnly
+                className="bg-gray-50 border-none rounded-lg p-3 text-gray-500 focus:ring-0"
+                value={profileData?.userName || "Loading..."}
+              />
+            )}
           </div>
 
           {/* Email Field */}
@@ -76,12 +105,16 @@ const Profile = () => {
             <label className="text-sm font-semibold text-gray-700">
               Email Address
             </label>
-            <input
-              type="text"
-              readOnly
-              className="bg-gray-50 border-none rounded-lg p-3 text-gray-500 focus:ring-0"
-              value={profileData?.email || "Loading..."}
-            />
+            {isEditing ? (
+              <input type="email" value={profileData?.email} />
+            ) : (
+              <input
+                type="text"
+                readOnly
+                className="bg-gray-50 border-none rounded-lg p-3 text-gray-500 focus:ring-0"
+                value={profileData?.email || "Loading..."}
+              />
+            )}
           </div>
 
           {/* Password Field */}
@@ -89,12 +122,16 @@ const Profile = () => {
             <label className="text-sm font-semibold text-gray-700">
               Password
             </label>
-            <input
-              type="password"
-              readOnly
-              className="bg-gray-50 border-none rounded-lg p-3 text-gray-500 focus:ring-0"
-              value="............"
-            />
+            {isEditing ? (
+              <input type="password" value="............" />
+            ) : (
+              <input
+                type="password"
+                readOnly
+                className="bg-gray-50 border-none rounded-lg p-3 text-gray-500 focus:ring-0"
+                value="............"
+              />
+            )}
           </div>
         </div>
 
