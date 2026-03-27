@@ -9,6 +9,7 @@ interface ProfileType {
   avatar: AvatarType;
   userName: string;
   email: string;
+  createdAt: string;
 }
 
 const Profile = () => {
@@ -26,6 +27,7 @@ const Profile = () => {
   useEffect(() => {
     getUserProfile();
   }, []);
+  console.log(profileData);
 
   return (
     <div className="min-h-screen bg-white p-8">
@@ -36,19 +38,16 @@ const Profile = () => {
             <div className="w-10 h-10 sm:w-20 sm:h-20  rounded-full overflow-hidden shadow-sm">
               <img
                 className="w-full h-full object-cover"
-                src={
-                  profileData?.avatar?.url ||
-                  "https://cdn-icons-png.flaticon.com/512/149/149071.png"
-                }
+                src={profileData?.avatar?.url}
                 alt="Profile"
               />
             </div>
             <div>
               <h1 className="text-sm sm:text-xl font-bold text-gray-900">
-                {profileData?.userName || "Alexa Rawles"}
+                {profileData?.userName || "Loading..."}
               </h1>
               <p className="text-gray-400 text-sm">
-                {profileData?.email || "alexarawles@gmail.com"}
+                {profileData?.email || "Loading..."}
               </p>
             </div>
           </div>
@@ -118,9 +117,9 @@ const Profile = () => {
             </div>
             <div>
               <p className="text-sm font-medium text-gray-800">
-                {profileData?.email || "alexarawles@gmail.com"}
+                {profileData?.email || "Loading..."}
               </p>
-              <p className="text-xs text-gray-400">1 month ago</p>
+              <p className="text-xs text-gray-400">{profileData?.createdAt}</p>
             </div>
           </div>
         </div>
