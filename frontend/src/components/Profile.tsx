@@ -31,9 +31,9 @@ const Profile = () => {
     <div className="min-h-screen bg-white p-8">
       <div className="max-w-5xl mx-auto">
         {/* Header Section */}
-        <div className="flex flex-col gap-5 sm:flex sm:items-center sm:justify-between mb-10">
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between mb-10">
           <div className="flex items-center gap-4">
-            <div className="w-20 h-20 rounded-full overflow-hidden shadow-sm">
+            <div className="w-10 h-10 sm:w-20 sm:h-20  rounded-full overflow-hidden shadow-sm">
               <img
                 className="w-full h-full object-cover"
                 src={
@@ -44,7 +44,7 @@ const Profile = () => {
               />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-gray-900">
+              <h1 className="text-sm sm:text-xl font-bold text-gray-900">
                 {profileData?.userName || "Alexa Rawles"}
               </h1>
               <p className="text-gray-400 text-sm">
@@ -52,7 +52,7 @@ const Profile = () => {
               </p>
             </div>
           </div>
-          <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-sm font-medium transition shadow-sm">
+          <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 sm:px-6 sm:py-2 rounded-lg text-sm sm:text-xl font-medium transition shadow-sm">
             Edit
           </button>
         </div>
