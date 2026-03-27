@@ -28,50 +28,102 @@ const Profile = () => {
   }, []);
 
   return (
-    <div className="h-dvh m-[-14px] w-full flex items-center justify-center bg-gray-100 p-4">
-      {/* Profile Card */}
-      <div className="bg-white w-full max-w-md rounded-2xl shadow-xl p-8 flex flex-col items-center">
-        <h1 className="text-2xl font-bold text-gray-800 mb-8">My Profile</h1>
+    <div className="min-h-screen bg-white p-8">
+      <div className="max-w-5xl mx-auto">
+        {/* Header Section */}
+        <div className="flex flex-col gap-5 sm:flex sm:items-center sm:justify-between mb-10">
+          <div className="flex items-center gap-4">
+            <div className="w-20 h-20 rounded-full overflow-hidden shadow-sm">
+              <img
+                className="w-full h-full object-cover"
+                src={
+                  profileData?.avatar?.url ||
+                  "https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                }
+                alt="Profile"
+              />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-gray-900">
+                {profileData?.userName || "Alexa Rawles"}
+              </h1>
+              <p className="text-gray-400 text-sm">
+                {profileData?.email || "alexarawles@gmail.com"}
+              </p>
+            </div>
+          </div>
+          <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg text-sm font-medium transition shadow-sm">
+            Edit
+          </button>
+        </div>
 
-        {/* Avatar */}
-        <div className="relative">
-          <div className="ring-4 ring-blue-500 rounded-full overflow-hidden w-32 h-32 shadow-lg">
-            <img
-              className="w-full h-full object-cover"
-              src={
-                profileData?.avatar?.url ||
-                "https://cdn-icons-png.flaticon.com/512/149/149071.png"
-              }
-              alt="Profile"
+        {/* Form Grid Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+          {/* Username Field */}
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-semibold text-gray-700">
+              Username
+            </label>
+            <input
+              type="text"
+              readOnly
+              className="bg-gray-50 border-none rounded-lg p-3 text-gray-500 focus:ring-0"
+              value={profileData?.userName || "Loading..."}
+            />
+          </div>
+
+          {/* Email Field */}
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-semibold text-gray-700">
+              Email Address
+            </label>
+            <input
+              type="text"
+              readOnly
+              className="bg-gray-50 border-none rounded-lg p-3 text-gray-500 focus:ring-0"
+              value={profileData?.email || "Loading..."}
+            />
+          </div>
+
+          {/* Password Field */}
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-semibold text-gray-700">
+              Password
+            </label>
+            <input
+              type="password"
+              readOnly
+              className="bg-gray-50 border-none rounded-lg p-3 text-gray-500 focus:ring-0"
+              value="............"
             />
           </div>
         </div>
 
-        {/* Info Section */}
-        <div className="w-full mt-10 space-y-4">
-          <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 hover:border-blue-300 transition">
-            <span className="text-xs font-semibold text-gray-400 uppercase">
-              Username
-            </span>
-            <p className="text-lg font-semibold text-gray-700">
-              {profileData?.userName || "Loading..."}
-            </p>
-          </div>
-
-          <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 hover:border-blue-300 transition">
-            <span className="text-xs font-semibold text-gray-400 uppercase">
-              Email Address
-            </span>
-            <p className="text-lg font-semibold text-gray-700 break-all">
-              {profileData?.email || "Loading..."}
-            </p>
+        {/* Footer Section */}
+        <div className="border-t border-gray-100 pt-8">
+          <h2 className="text-lg font-bold text-gray-900 mb-6">
+            My email Address
+          </h2>
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-10 h-10 bg-blue-50 flex items-center justify-center rounded-full text-blue-600">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-800">
+                {profileData?.email || "alexarawles@gmail.com"}
+              </p>
+              <p className="text-xs text-gray-400">1 month ago</p>
+            </div>
           </div>
         </div>
-
-        {/* Button */}
-        <button className="mt-8 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl shadow-md transition active:scale-95">
-          Edit Profile
-        </button>
       </div>
     </div>
   );
