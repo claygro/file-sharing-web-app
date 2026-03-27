@@ -45,7 +45,7 @@ const Profile = () => {
   useEffect(() => {
     getUserProfile();
   }, []);
-  const handleUpdate = async (e: React.SubmitEvent<HTMLButtonElement>) => {
+  const handleUpdate = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     // 👉 If NOT editing → just enable edit mode
     if (!isEditing) {
