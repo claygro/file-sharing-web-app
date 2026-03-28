@@ -3,7 +3,7 @@ import demoImage from "../assets/images.jpeg";
 import { Search, File } from "lucide-react";
 import ProfilePopUp from "./ProfilePopUp";
 import connection from "../config/connection.config";
-const SearchBox = () => {
+const TopNavBar = () => {
   const [isProfilePopUpShow, setIsProfilePopUpShow] = useState<boolean>(false);
   interface AvatarType {
     url: string;
@@ -68,7 +68,7 @@ const SearchBox = () => {
               <img
                 src={profileData?.avatar?.url}
                 alt="Profile"
-                className="w-9 h-9 rounded-full object-cover border border-gray-200"
+                className="w-9 h-9 rounded-full object-cover border border-gray-200 cursor-pointer"
               />
             </button>
 
@@ -88,4 +88,4 @@ const SearchBox = () => {
   );
 };
 
-export default SearchBox;
+export default TopNavBar;

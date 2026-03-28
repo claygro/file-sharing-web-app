@@ -68,7 +68,7 @@ const ProfilePopUp = ({
                   (navigate("/layout/profile"),
                     setIsProfilePopUpShow(!isProfilePopUpShow));
                 }}
-                className="flex items-center justify-center gap-2 bg-white py-4 rounded-l-3xl rounded-r-lg hover:bg-gray-50 transition-colors"
+                className="flex cursor-pointer items-center justify-center gap-2 bg-white py-4 rounded-l-3xl rounded-r-lg hover:bg-gray-50 transition-colors"
               >
                 <Plus size={20} className="text-[#0b57d0]" />
                 <span className="text-sm font-medium text-gray-700">
@@ -77,7 +77,7 @@ const ProfilePopUp = ({
               </button>
 
               {/* Logout */}
-              <button className="flex items-center justify-center gap-2 bg-white py-4 rounded-r-3xl rounded-l-lg hover:bg-gray-50 transition-colors">
+              <button className="flex cursor-pointer items-center justify-center gap-2 bg-white py-4 rounded-r-3xl rounded-l-lg hover:bg-gray-50 transition-colors">
                 <LogOut size={20} className="text-gray-700" />
                 <span className="text-sm font-medium text-gray-700">
                   Sign out
