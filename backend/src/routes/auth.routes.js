@@ -8,4 +8,5 @@ authRoutes.post(
   uploadAvatar.single("avatar"),
   authControllers.signup,
 );
+authRoutes.delete("/signout", authControllers.signout);
 export default authRoutes;

@@ -46,5 +46,18 @@ class AuthControllers {
       res.status(500).json({ message: `Error in signup ${error}` });
     }
   }
+  //signout
+  async signout(req, res) {
+    try {
+      await res.cookie("userToken", "", {
+        secure: process.env.NODE_ENV === "production", // Use true for HTTPS
+        sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // "None" for cross-origin
+        maxAge: 30 * 24 * 60 * 60 * 1000, // Cookie expiry time (30 days)
+      });
+      res.status(200).json({ message: "Signout successfully" });
+    } catch (error) {
+      res.status(500).json({ message: `Error in signout ${error}` });
+    }
+  }
 }
 export default AuthControllers;
