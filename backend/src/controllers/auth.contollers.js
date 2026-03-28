@@ -59,5 +59,41 @@ class AuthControllers {
       res.status(500).json({ message: `Error in signout ${error}` });
     }
   }
+  //signin
+  async signIn(req, res) {
+    const { email, password } = req.body;
+    try {
+      const user = await UserModel.findOne({ email: email });
+      if (!user) {
+        return res.status(404).json({ message: "Something went wrong" });
+      }
+
+      bcrypt.compare(password, user.password, function (error, result) {
+        if (result) {
+          return res.status(200).json({ message: "Welcome back" });
+        } else {
+          return res.status(404).json({ message: "Something went wrong" });
+        }
+      });
+      const userToken = jwt.sign(
+        {
+          userid: user._id,
+          avatar: user.avatar,
+          username: user.userName,
+          email: email,
+        },
+        process.env.JWT_SECRET_KEY,
+        { expiresIn: "30d" },
+      );
+      res.cookie("userToken", userToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+      });
+    } catch (error) {
+      res.status(500).json({ message: `Error in signIn ${error}` });
+    }
+  }
 }
 export default AuthControllers;

@@ -10,6 +10,7 @@ import Recents from "./components/Recents";
 import Settings from "./components/Settings";
 import { FileRetriveProvider } from "./context/fileRetriveContext";
 import Profile from "./components/Profile";
+import Login from "./components/Login";
 function App() {
   return (
     <>
@@ -17,7 +18,7 @@ function App() {
         <FileRetriveProvider>
           <Routes>
             <Route path="/" element={<Signup />} />
-
+            <Route path="/login" element={<Login />} />
             <Route path="/layout" element={<LayOut />}>
               <Route index element={<Home />} />
 

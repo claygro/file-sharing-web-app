@@ -35,6 +35,12 @@ const ProfilePopUp = ({
   useEffect(() => {
     getUserProfile();
   }, []);
+  const handleSignOut = async () => {
+    await connection.delete("/auth/signout");
+    localStorage.removeItem("userLoggedIn");
+    navigate("/login");
+    window.location.reload();
+  };
   return (
     <>
       <div className="flex items-center justify-center p-4">
@@ -77,7 +83,10 @@ const ProfilePopUp = ({
               </button>
 
               {/* Logout */}
-              <button className="flex cursor-pointer items-center justify-center gap-2 bg-white py-4 rounded-r-3xl rounded-l-lg hover:bg-gray-50 transition-colors">
+              <button
+                onClick={handleSignOut}
+                className="flex cursor-pointer items-center justify-center gap-2 bg-white py-4 rounded-r-3xl rounded-l-lg hover:bg-gray-50 transition-colors"
+              >
                 <LogOut size={20} className="text-gray-700" />
                 <span className="text-sm font-medium text-gray-700">
                   Sign out

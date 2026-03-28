@@ -9,4 +9,5 @@ authRoutes.post(
   authControllers.signup,
 );
 authRoutes.delete("/signout", authControllers.signout);
+authRoutes.post("/signIn", authControllers.signIn);
 export default authRoutes;
