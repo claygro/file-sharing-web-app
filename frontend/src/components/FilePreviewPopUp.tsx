@@ -74,17 +74,6 @@ const FilePreviewPopUp = ({
               {selectedFile.name}
             </p>
 
-            <a href={`${fileUrl}/${fileId}`} target="_blank" rel="noreferrer">
-              {selectedFile.fileType !== "docx" ? (
-                <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition">
-                  Open File
-                </button>
-              ) : (
-                <button className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition">
-                  Download
-                </button>
-              )}
-            </a>
           </div>
         )}
 
