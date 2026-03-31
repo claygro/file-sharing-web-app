@@ -31,7 +31,7 @@ const FilePreviewPopUp = ({
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-50">
       <div
         key={fileId}
-        className="rounded-2xl w-full max-w-4xl flex flex-col gap-4 overflow-hidden"
+        className="rounded-2xl w-full max-w-4xl flex flex-col gap-4 overflow-hidden bg-black/60"
       >
         {/* Top bar */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
@@ -83,7 +83,7 @@ const FilePreviewPopUp = ({
         </div>
 
         {/* Preview (FIXED SIZE) */}
-        <div className="flex justify-center items-center mx-6 mb-6 rounded-xl overflow-hidden w-[800px] h-[450px] max-w-full bg-black/30 border border-white/10">
+        <div className="flex justify-center items-center mx-6 mb-6 rounded-xl overflow-hidden  h-[450px] max-w-full bg-black/30 border border-white/10">
           {!selectedFile ? (
             <span className="text-white/40 text-sm">Loading</span>
           ) : selectedFile.fileType === "pdf" ? (
