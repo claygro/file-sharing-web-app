@@ -10,6 +10,7 @@ interface FileData {
   createdAt: string;
   fileType: string;
   fileId: string;
+  secure_url: string;
 }
 
 interface FilePreviewPopUpProps {
@@ -26,7 +27,6 @@ const FilePreviewPopUp = ({
   file,
 }: FilePreviewPopUpProps) => {
   const selectedFile = file.find((f) => f.fileId === fileId);
-
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-50">
       <div
@@ -42,8 +42,14 @@ const FilePreviewPopUp = ({
           <div className="flex items-center gap-2">
             {/* Download */}
             <a
-              href={selectedFile ? `${fileUrl}/${fileId}` : "#"}
-              download={selectedFile?.name}
+              href={
+                selectedFile
+                  ? selectedFile.secure_url.replace(
+                      "/upload/",
+                      "/upload/fl_attachment/",
+                    )
+                  : "#"
+              }
               className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-medium bg-white/10 text-white/80 border border-white/10 hover:bg-white/20 transition"
             >
               <Download size={14} />
