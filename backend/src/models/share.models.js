@@ -10,7 +10,7 @@ const fileShare = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "fileUpload",
     },
-    expiredAt: {
+    expiresAt: {
       type: Date,
     },
     isRestriction: {

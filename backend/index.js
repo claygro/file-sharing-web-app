@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 import fileRetriveRoutes from "./src/routes/fileRetrive.routes.js";
 import fileUrlRoutes from "./src/routes/fileUrl.routes.js";
 import profileRoutes from "./src/routes/profile.routes.js";
+import fileShareRoutes from "./src/routes/fileShare.routes.js";
 const app = express();
 app.use(
   cors({
@@ -24,6 +25,7 @@ app.use("/uploadFile", fileRoutes);
 app.use("/retrive", fileRetriveRoutes);
 app.use("/fileVault", fileUrlRoutes);
 app.use("/profile", profileRoutes);
+app.use("/shareUrl", fileShareRoutes);
 const port = process.env.PORT;
 app.listen(port, async () => {
   try {
