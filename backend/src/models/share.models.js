@@ -12,9 +12,11 @@ const fileShare = new mongoose.Schema(
     },
     expiresAt: {
       type: Date,
+      default: null,
     },
     isRestriction: {
       type: String,
+      
     },
   },
   { timestamps: true },

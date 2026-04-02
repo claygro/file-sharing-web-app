@@ -11,24 +11,35 @@ function convertToMs(value, unit) {
 class FileShareControllers {
   async fileShare(req, res) {
     const { fileId, timeDuration, timeDurationUnit, isRestriction } = req.body;
+
     try {
       const token = crypto.randomBytes(16).toString("hex");
-      const timeInMs = convertToMs(timeDuration, timeDurationUnit);
-      const expiresAt = new Date(Date.now() + timeInMs);
-      await FileShareModel.create({
+
+      let expiresAt = null;
+
+      // Only set expiry if both values exist
+      if (timeDuration && timeDurationUnit) {
+        const timeInMs = convertToMs(timeDuration, timeDurationUnit);
+
+        if (!isNaN(timeInMs)) {
+          expiresAt = new Date(Date.now() + timeInMs);
+        }
+      }
+
+       await FileShareModel.create({
         token,
         fileId,
-        expiresAt,
+        expiresAt, // null OR valid date
         isRestriction,
       });
+
       res.json({ url: `http://localhost:5173/share/${token}` });
     } catch (error) {
-      res
-        .status(500)
-        .json({ message: `Error in creating sharing url ${error}` });
+      res.status(500).json({
+        message: `Error in creating sharing url ${error}`,
+      });
     }
   }
   //checking the token expire
-  
 }
 export default FileShareControllers;
