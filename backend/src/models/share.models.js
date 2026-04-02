@@ -14,8 +14,7 @@ const fileShare = new mongoose.Schema(
       type: Date,
     },
     isRestriction: {
-      type: Boolean,
-      default: false,
+      type: String,
     },
   },
   { timestamps: true },
