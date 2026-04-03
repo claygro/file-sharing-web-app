@@ -10,6 +10,7 @@ const SharePopUp = ({ setIsSharePopUpShow, fileId }: ShareFile) => {
   const [accessType, setAccessType] = useState<string | null>("Restricted");
   const [time, setTime] = useState<number | null>(null);
   const [timeUnit, setTimeUnit] = useState<string | null>(null);
+  const [url, setUrl] = useState<string>();
   const handleAccessChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setAccessType(e.target.value);
   };
@@ -19,10 +20,7 @@ const SharePopUp = ({ setIsSharePopUpShow, fileId }: ShareFile) => {
   const handleTimeUnitChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setTimeUnit(e.target.value);
   };
-  console.log(accessType);
-  console.log(time);
-  console.log(timeUnit);
-  console.log(fileId);
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -31,12 +29,13 @@ const SharePopUp = ({ setIsSharePopUpShow, fileId }: ShareFile) => {
 
       console.log(Object.fromEntries(accessDetails.entries()));
 
-      await connection.post("/shareUrl/create", {
+      const response = await connection.post("/shareUrl/create", {
         fileId,
         timeDuration: time,
         timeDurationUnit: timeUnit,
         isRestriction: accessType,
       });
+      setUrl(response.data.url);
     } catch (error) {
       console.log("Error submitting access details", error);
     }
@@ -105,11 +104,23 @@ const SharePopUp = ({ setIsSharePopUpShow, fileId }: ShareFile) => {
               </select>
             </div>
           )}
-
+          {url ? (
+            <>
+              <a href={`${url}`} target="_blank">
+                Open
+              </a>
+              <button onClick={() => navigator.clipboard.writeText(url)}>
+                Copy Url
+              </button>
+            </>
+          ) : (
+            ""
+          )}
           {/* Submit Button */}
           <button className="bg-blue-500 text-white py-2 rounded-lg font-medium hover:bg-blue-600 transition">
             Submit
           </button>
+          {}
         </form>
       </div>
     </div>
