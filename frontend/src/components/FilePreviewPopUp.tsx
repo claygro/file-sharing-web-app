@@ -29,7 +29,7 @@ const FilePreviewPopUp = ({
 }: FilePreviewPopUpProps) => {
   const [isSharePopUpShow, setIsSharePopUpShow] = useState<boolean>(false);
   const selectedFile = file.find((f) => f.fileId === fileId);
-  console.log(selectedFile?._id);
+  // console.log(selectedFile?._id);
   return (
     <>
       <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-50">
@@ -114,7 +114,7 @@ const FilePreviewPopUp = ({
               />
             )}
             {/* showing share popup */}
-            {isSharePopUpShow ? (
+            {isSharePopUpShow && (
               <div className="fixed inset-0 bg-black/60 flex items-center justify-center h-dvh">
                 {selectedFile && (
                   <SharePopUp
@@ -123,8 +123,6 @@ const FilePreviewPopUp = ({
                   />
                 )}
               </div>
-            ) : (
-              ""
             )}
           </div>
 

@@ -19,13 +19,13 @@ const Home = () => {
     setIsFileShow(true);
     try {
       // console.log(fileId);
-      const response = await connection.get(`/fileVault/file/${fileId}`);
+      await connection.get(`/fileVault/file/${fileId}`);
       setFileId(fileId);
       // console.log(
       //   window.open(`http://localhost:8000/fileVault/file/${fileId}`, "_blank"),
       // );
 
-      console.log(response);
+      // console.log(response);
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.log(`Error in getting url ${error}`);

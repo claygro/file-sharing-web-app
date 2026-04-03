@@ -104,23 +104,29 @@ const SharePopUp = ({ setIsSharePopUpShow, fileId }: ShareFile) => {
               </select>
             </div>
           )}
-          {url ? (
-            <>
-              <a href={`${url}`} target="_blank">
+          {url && (
+            <div className="flex items-center gap-3">
+              <a
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition"
+              >
                 Open
               </a>
-              <button onClick={() => navigator.clipboard.writeText(url)}>
-                Copy Url
+
+              <button
+                onClick={() => navigator.clipboard.writeText(url)}
+                className="px-4 py-2 cursor-pointer bg-blue-500 text-white rounded-md font-medium hover:bg-blue-600 transition"
+              >
+                Copy URL
               </button>
-            </>
-          ) : (
-            ""
+            </div>
           )}
           {/* Submit Button */}
           <button className="bg-blue-500 text-white py-2 rounded-lg font-medium hover:bg-blue-600 transition">
             Submit
           </button>
-          {}
         </form>
       </div>
     </div>

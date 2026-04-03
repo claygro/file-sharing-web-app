@@ -11,7 +11,7 @@ import Settings from "./components/Settings";
 import { FileRetriveProvider } from "./context/fileRetriveContext";
 import Profile from "./components/Profile";
 import Login from "./components/Login";
-import SharePopUp from "./components/SharePopUp";
+
 import SharePagePreview from "./components/SharePagePreview";
 function App() {
   return (
@@ -31,7 +31,6 @@ function App() {
               <Route path="recents" element={<Recents />} />
               <Route path="setting" element={<Settings />} />
               <Route path="profile" element={<Profile />} />
-              <Route path="shareUrl" element={<SharePopUp />} />
             </Route>
           </Routes>
         </FileRetriveProvider>
