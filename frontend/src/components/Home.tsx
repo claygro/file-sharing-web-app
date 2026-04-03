@@ -18,7 +18,7 @@ const Home = () => {
   const handleFileClick = async (fileId: string) => {
     setIsFileShow(true);
     try {
-      console.log(fileId);
+      // console.log(fileId);
       const response = await connection.get(`/fileVault/file/${fileId}`);
       setFileId(fileId);
       // console.log(

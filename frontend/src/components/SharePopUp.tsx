@@ -7,7 +7,7 @@ interface ShareFile {
 }
 const SharePopUp = ({ setIsSharePopUpShow, fileId }: ShareFile) => {
   const [isOn, setIsOn] = useState(false);
-  const [accessType, setAccessType] = useState<string | null>(null);
+  const [accessType, setAccessType] = useState<string | null>("Restricted");
   const [time, setTime] = useState<number | null>(null);
   const [timeUnit, setTimeUnit] = useState<string | null>(null);
   const handleAccessChange = (e: ChangeEvent<HTMLSelectElement>) => {

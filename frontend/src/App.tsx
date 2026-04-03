@@ -12,6 +12,7 @@ import { FileRetriveProvider } from "./context/fileRetriveContext";
 import Profile from "./components/Profile";
 import Login from "./components/Login";
 import SharePopUp from "./components/SharePopUp";
+import SharePagePreview from "./components/SharePagePreview";
 function App() {
   return (
     <>
@@ -20,6 +21,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Signup />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/share/:token" element={<SharePagePreview />} />
             <Route path="/layout" element={<LayOut />}>
               <Route index element={<Home />} />
 

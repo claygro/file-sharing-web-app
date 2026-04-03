@@ -1,5 +1,7 @@
 import crypto from "crypto";
 import FileShareModel from "../models/share.models.js";
+import FileUploadModel from "../models/fileUpload.models.js";
+import axios from "axios";
 function convertToMs(value, unit) {
   switch (unit) {
     case "minutes":
@@ -26,7 +28,7 @@ class FileShareControllers {
         }
       }
 
-       await FileShareModel.create({
+      await FileShareModel.create({
         token,
         fileId,
         expiresAt, // null OR valid date
@@ -41,5 +43,43 @@ class FileShareControllers {
     }
   }
   //checking the token expire
+  async urlExpireValidate(req, res) {
+    const { token } = req.params;
+    try {
+      const url = await FileShareModel.findOne({ token });
+      if (!url) {
+        return res.status(404).json({ message: "Can't find the url" });
+      }
+      // checking the expire of the url
+      if (url.expiresAt !== null) {
+        if (Date.now() > new Date(url.expiresAt).getTime()) {
+          return res.status(410).json({ message: "Link expire" });
+        }
+      }
+
+      const file = await FileUploadModel.findById(url.fileId);
+      if (!file) {
+        return res.status(404).json({ message: "File not found" });
+      }
+      const response = await axios({
+        url: file.secure_url,
+        method: "GET",
+        responseType: "stream",
+      });
+      // ✅ Set headers for preview
+      res.setHeader("Content-Type", response.headers["content-type"]);
+      res.setHeader(
+        "Content-Disposition",
+        `inline; filename="${file.originalFileName}"`,
+      );
+
+      // 📤 Pipe stream to client
+      response.data.pipe(res);
+    } catch (error) {
+      res
+        .status(500)
+        .json({ message: `Error in validate the expire of url ${error}` });
+    }
+  }
 }
 export default FileShareControllers;
