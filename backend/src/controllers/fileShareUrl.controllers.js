@@ -68,11 +68,15 @@ class FileShareControllers {
       });
       // ✅ Set headers for preview
       res.setHeader("Content-Type", response.headers["content-type"]);
+      //this content type tells the browser what type of file it is.
       res.setHeader(
         "Content-Disposition",
         `inline; filename="${file.originalFileName}"`,
       );
-
+      // Content-Disposition — What should browser do with it?
+      // inline
+      // Opens file inside the browser
+      // Example: PDF opens in a tab
       // 📤 Pipe stream to client
       response.data.pipe(res);
     } catch (error) {
