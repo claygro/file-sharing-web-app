@@ -14,9 +14,19 @@ const fileShare = new mongoose.Schema(
       type: Date,
       default: null,
     },
+    ownerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+    },
+    accessUser: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+      },
+    ],
     isRestriction: {
       type: String,
-      
+      enum: ["public", "restricted"],
     },
   },
   { timestamps: true },
