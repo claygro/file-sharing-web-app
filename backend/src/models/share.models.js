@@ -27,6 +27,7 @@ const fileShare = new mongoose.Schema(
     isRestriction: {
       type: String,
       enum: ["public", "restricted"],
+      default: "public",
     },
   },
   { timestamps: true },

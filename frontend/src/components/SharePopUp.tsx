@@ -60,8 +60,8 @@ const SharePopUp = ({ setIsSharePopUpShow, fileId }: ShareFile) => {
             onChange={handleAccessChange}
             className="border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-400"
           >
-            <option value="Restricted">Restricted</option>
-            <option value="Anyone with the link">Anyone with the link</option>
+            <option value="public">public</option>
+            <option value="restricted">restricted</option>
           </select>
 
           {/* Toggle Section */}
