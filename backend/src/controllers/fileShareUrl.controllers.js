@@ -43,7 +43,7 @@ class FileShareControllers {
     }
   }
   //checking the token expire
-  async urlExpireValidate(req, res) {
+  async checkUrl(req, res) {
     const { token } = req.params;
     try {
       const url = await FileShareModel.findOne({ token });

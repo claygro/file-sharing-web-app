@@ -27,11 +27,20 @@ app.use("/fileVault", fileUrlRoutes);
 app.use("/profile", profileRoutes);
 app.use("/shareUrl", fileShareRoutes);
 const port = process.env.PORT;
-app.listen(port, async () => {
+async function startServer() {
   try {
+    console.log("Connecting to database...");
     await mongoose.connect(process.env.MONGO_DB_CONNECTION_URL);
-    console.log(`Server is started at ${port}`);
+    console.log("Database is connected");
+    app.listen(port, () => {
+      try {
+        console.log(`Server is started at ${port}`);
+      } catch (error) {
+        console.log(`Error in starting server: ${error}`);
+      }
+    });
   } catch (error) {
-    console.log(`Error in starting server: ${error}`);
+    console.log(`Error in starting server ${error}`);
   }
-});
+}
+startServer();
