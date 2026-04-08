@@ -2,6 +2,7 @@ import crypto from "crypto";
 import FileShareModel from "../models/share.models.js";
 import FileUploadModel from "../models/fileUpload.models.js";
 import axios from "axios";
+import NotificationModels from "../models/notification.models.js";
 function convertToMs(value, unit) {
   switch (unit) {
     case "minutes":
@@ -13,8 +14,14 @@ function convertToMs(value, unit) {
 class FileShareControllers {
   async fileShare(req, res) {
     const { fileId, timeDuration, timeDurationUnit, isRestriction } = req.body;
-
+    const { userid } = req.user;
     try {
+      if (!userid) {
+        return (
+          res.status(401),
+          json({ message: "Unauthorized. Please loggedin" })
+        );
+      }
       const token = crypto.randomBytes(16).toString("hex");
 
       let expiresAt = null;
@@ -32,6 +39,7 @@ class FileShareControllers {
         token,
         fileId,
         expiresAt, // null OR valid date
+        ownerId: userid,
         isRestriction,
       });
 
@@ -45,6 +53,8 @@ class FileShareControllers {
   //checking the token expire
   async checkUrl(req, res) {
     const { token } = req.params;
+    const { userid } = req.user;
+    console.log(req.user);
     try {
       const url = await FileShareModel.findOne({ token });
       if (!url) {
@@ -56,7 +66,14 @@ class FileShareControllers {
           return res.status(410).json({ message: "Link expire" });
         }
       }
-
+      // checking the restriction on url
+      if (url.isRestriction === "restricted") {
+        await NotificationModels.create({
+          senderId: url.ownerId,
+          receiverId: userid,
+        });
+        return res.status(401).json({ message: "This file is restricted" });
+      }
       const file = await FileUploadModel.findById(url.fileId);
       if (!file) {
         return res.status(404).json({ message: "File not found" });

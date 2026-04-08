@@ -1,7 +1,12 @@
 import { Router } from "express";
 import FileShareControllers from "../controllers/fileShareUrl.controllers.js";
+import UserMiddleware from "../middlewares/user.middlewares.js";
 const fileShareRoutes = Router();
 const fileShareControllers = new FileShareControllers();
-fileShareRoutes.post("/create", fileShareControllers.fileShare);
-fileShareRoutes.get("/share/:token", fileShareControllers.checkUrl);
+fileShareRoutes.post("/create", UserMiddleware, fileShareControllers.fileShare);
+fileShareRoutes.get(
+  "/share/:token",
+  UserMiddleware,
+  fileShareControllers.checkUrl,
+);
 export default fileShareRoutes;

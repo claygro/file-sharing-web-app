@@ -1,34 +1,56 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const SharePagePreview = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [fileUrl, setFileUrl] = useState<string>("");
   const [fileType, setFileType] = useState<string>("");
-  const token = useParams();
-  console.log(token.token);
+  const hasFetched = useRef(false);
+  const { token } = useParams();
+  console.log(token);
 
   useEffect(() => {
+    if (hasFetched.current) return; // 🚨 prevent double call
+    hasFetched.current = true;
     async function fetchFile() {
-      const res = await fetch(
-        `http://localhost:8000/shareUrl/share/${token?.token}`,
-      );
-      if (!res.ok) {
-        setErrorMessage("Opps! Url is expired");
+      try {
+        const res = await axios.get(
+          `http://localhost:8000/shareUrl/share/${token}`,
+          {
+            responseType: "blob",
+            withCredentials: true,
+          },
+        );
+
+        const blob = res.data;
+        setFileType(blob.type);
+
+        const url = URL.createObjectURL(blob);
+        setFileUrl(url);
+      } catch (error: any) {
+        const response = error?.response;
+
+        if (response?.data instanceof Blob) {
+          // convert blob error → json
+          const text = await response.data.text();
+          const json = JSON.parse(text);
+          setErrorMessage(json.message);
+        } else {
+          setErrorMessage(response?.data?.message || "Something went wrong");
+        }
       }
-      const blob = await res.blob();
-      setFileType(blob.type);
-      const url = URL.createObjectURL(blob);
-      setFileUrl(url);
     }
 
-    if (token?.token) fetchFile();
+    if (token) fetchFile();
   }, [token]);
-  console.log(fileUrl);
-  console.log(errorMessage);
+
+  const isImage = fileType?.startsWith("image/");
+  const isVideo = fileType?.startsWith("video/");
+  const isPDF = fileType === "application/pdf";
+
   return (
     <div className="min-h-screen bg-gray-950 text-white flex flex-col">
-      {/* 🔝 Header */}
       <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
         <h1 className="text-lg font-semibold">File Preview</h1>
       </div>
@@ -43,16 +65,14 @@ const SharePagePreview = () => {
           </div>
         </div>
       ) : !fileUrl ? (
-        /* ⏳ Loading UI */
         <div className="flex flex-1 items-center justify-center">
           <div className="animate-pulse text-white/60">Loading file...</div>
         </div>
       ) : (
-        /* 📦 File Preview */
         <div className="flex-1 flex items-center justify-center p-4">
           <div className="max-w-5xl w-full flex items-center justify-center">
             {/* 🖼 Image */}
-            {fileType.startsWith("image/") && (
+            {isImage && (
               <img
                 src={fileUrl}
                 className="max-h-[80vh] rounded-xl shadow-lg"
@@ -60,7 +80,7 @@ const SharePagePreview = () => {
             )}
 
             {/* 🎥 Video */}
-            {fileType.startsWith("video/") && (
+            {isVideo && (
               <video
                 src={fileUrl}
                 controls
@@ -69,7 +89,7 @@ const SharePagePreview = () => {
             )}
 
             {/* 📄 PDF */}
-            {fileType === "application/pdf" && (
+            {isPDF && (
               <iframe
                 src={fileUrl}
                 className="w-full h-[85vh] rounded-xl border border-white/10"
@@ -77,20 +97,18 @@ const SharePagePreview = () => {
             )}
 
             {/* ❓ Unknown File */}
-            {!fileType.startsWith("image/") &&
-              !fileType.startsWith("video/") &&
-              fileType !== "application/pdf" && (
-                <div className="text-center">
-                  <p className="text-white/70 mb-4">Preview not available</p>
-                  <a
-                    href={fileUrl}
-                    download
-                    className="px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition"
-                  >
-                    Download File
-                  </a>
-                </div>
-              )}
+            {!isImage && !isVideo && !isPDF && (
+              <div className="text-center">
+                <p className="text-white/70 mb-4">Preview not available</p>
+                <a
+                  href={fileUrl}
+                  download
+                  className="px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition"
+                >
+                  Download File
+                </a>
+              </div>
+            )}
           </div>
         </div>
       )}

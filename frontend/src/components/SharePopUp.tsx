@@ -40,6 +40,7 @@ const SharePopUp = ({ setIsSharePopUpShow, fileId }: ShareFile) => {
       console.log("Error submitting access details", error);
     }
   };
+  console.log(typeof time);
   return (
     <div className="fixed inset-0 flex items-center justify-center">
       {/* Card */}
