@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useState, type ChangeEvent, type FormEvent, useRef } from "react";
 import connection from "../config/connection.config";
 interface ShareFile {
   setIsSharePopUpShow: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,7 +23,6 @@ const SharePopUp = ({ setIsSharePopUpShow, fileId }: ShareFile) => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
     try {
       const accessDetails = new FormData();
 
@@ -40,7 +39,6 @@ const SharePopUp = ({ setIsSharePopUpShow, fileId }: ShareFile) => {
       console.log("Error submitting access details", error);
     }
   };
-  console.log(typeof time);
   return (
     <div className="fixed inset-0 flex items-center justify-center">
       {/* Card */}
@@ -117,7 +115,10 @@ const SharePopUp = ({ setIsSharePopUpShow, fileId }: ShareFile) => {
               </a>
 
               <button
-                onClick={() => navigator.clipboard.writeText(url)}
+                type="button"
+                onClick={(e) => {
+                  (e.stopPropagation(), navigator.clipboard.writeText(url));
+                }}
                 className="px-4 py-2 cursor-pointer bg-blue-500 text-white rounded-md font-medium hover:bg-blue-600 transition"
               >
                 Copy URL
