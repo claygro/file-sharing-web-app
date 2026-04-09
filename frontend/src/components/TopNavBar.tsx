@@ -27,6 +27,7 @@ const TopNavBar = () => {
   const [notificationData, setNotificationData] = useState<NotificationType[]>(
     [],
   );
+  const [isNotificationShow, setIsNotificationShow] = useState<boolean>(false);
   async function getUserProfile() {
     try {
       const response = await connection.get("/profile/profile");
@@ -88,7 +89,10 @@ const TopNavBar = () => {
 
           {/* Profile */}
           <div className="relative ">
-            <div className="flex items-center gap-20 relative">
+            <div
+              className="flex items-center cursor-pointer gap-20 relative"
+              onClick={() => setIsNotificationShow(!isNotificationShow)}
+            >
               {/* Notification Icon */}
               <div>
                 <button className="relative">
@@ -98,47 +102,55 @@ const TopNavBar = () => {
                   />
 
                   {/* Optional: Notification badge */}
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
+                  <span className="absolute -top-1 -right-1 cursor-pointer bg-red-500 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
                     {notificationData?.length}
                   </span>
                 </button>
-                <div className="absolute overflow-y-scroll h-52 right-0 mt-3 w-80 bg-white shadow-lg rounded-2xl p-3 space-y-3 z-50">
-                  {notificationData.map((notification) => (
-                    <div
-                      key={notification._id}
-                      className="flex items-center justify-between bg-white shadow-sm rounded-xl p-3 hover:shadow-md transition"
-                    >
-                      <div className="flex items-center gap-3">
-                        <img
-                          src={notification.receiverId.avatar.url}
-                          alt="user"
-                          className="w-10 h-10 rounded-full object-cover"
-                        />
+                {isNotificationShow && (
+                  <div className="absolute overflow-y-scroll h-52 right-0 mt-3 w-80 bg-white shadow-lg rounded-2xl p-3 space-y-3 z-50">
+                    {notificationData.map((notification) => (
+                      <div
+                        key={notification._id}
+                        className="flex items-center justify-between bg-white shadow-sm rounded-xl p-3 hover:shadow-md transition"
+                      >
+                        <div className="flex items-center gap-3">
+                          <img
+                            src={notification.receiverId.avatar.url}
+                            alt="user"
+                            className="w-10 h-10 rounded-full object-cover"
+                          />
 
-                        <div>
-                          <h1 className="text-sm font-semibold text-gray-900">
-                            {notification.receiverId.userName}
-                          </h1>
-                          <p className="text-xs text-gray-500">
-                            {notification.receiverId.email}
-                          </p>
+                          <div>
+                            <h1 className="text-sm font-semibold text-gray-900">
+                              {notification.receiverId.userName}
+                            </h1>
+                            <p className="text-xs text-gray-500">
+                              {notification.receiverId.email}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          {/* Accept */}
+                          <button
+                            onClick={(e) => e.stopPropagation()}
+                            className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 active:bg-gray-300 cursor-pointer transition"
+                          >
+                            <Check size={16} className="text-black" />
+                          </button>
+
+                          {/* Reject */}
+                          <button
+                            onClick={(e) => e.stopPropagation()}
+                            className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 active:bg-gray-300 cursor-pointer transition"
+                          >
+                            <X size={16} className="text-black" />
+                          </button>
                         </div>
                       </div>
-
-                      <div className="flex items-center gap-2">
-                        {/* Accept */}
-                        <button className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 active:bg-gray-300 cursor-pointer transition">
-                          <Check size={16} className="text-black" />
-                        </button>
-
-                        {/* Reject */}
-                        <button className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 active:bg-gray-300 cursor-pointer transition">
-                          <X size={16} className="text-black" />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                )}
               </div>
               {/* Profile Button */}
               <div className="relative">
