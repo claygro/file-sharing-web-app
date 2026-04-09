@@ -8,7 +8,6 @@ const SharePagePreview = () => {
   const [fileType, setFileType] = useState<string>("");
   const hasFetched = useRef(false);
   const { token } = useParams();
-  console.log(token);
 
   useEffect(() => {
     if (hasFetched.current) return; // 🚨 prevent double call
