@@ -9,7 +9,7 @@ import fileRetriveRoutes from "./src/routes/fileRetrive.routes.js";
 import fileUrlRoutes from "./src/routes/fileUrl.routes.js";
 import profileRoutes from "./src/routes/profile.routes.js";
 import fileShareRoutes from "./src/routes/fileShare.routes.js";
-import notificationRoutes from "./src/routes/sendNotification.routes.js";
+import notificationRoutes from "./src/routes/getNotification.routes.js";
 const app = express();
 app.use(
   cors({

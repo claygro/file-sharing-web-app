@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import demoImage from "../assets/images.jpeg";
-import { Search, File } from "lucide-react";
+// import demoImage from "../assets/images.jpeg";
+import { Search, File, Bell, X, Check } from "lucide-react";
 import ProfilePopUp from "./ProfilePopUp";
 import connection from "../config/connection.config";
 const TopNavBar = () => {
@@ -11,8 +11,22 @@ const TopNavBar = () => {
   interface ProfileType {
     avatar: AvatarType;
   }
-
+  interface NotificationType {
+    _id: string;
+    senderId: string;
+    receiverId: {
+      email: string;
+      userName: string;
+      avatar: {
+        url: string;
+      };
+    };
+    status: string;
+  }
   const [profileData, setPofileData] = useState<ProfileType | null>(null);
+  const [notificationData, setNotificationData] = useState<NotificationType[]>(
+    [],
+  );
   async function getUserProfile() {
     try {
       const response = await connection.get("/profile/profile");
@@ -25,8 +39,23 @@ const TopNavBar = () => {
       }
     }
   }
+
+  async function getNotification() {
+    try {
+      const response = await connection.get("/notification/get");
+      setNotificationData(response.data);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.log(`Error in getting notification ${error}`);
+      } else {
+        console.log(`Error in getting notification ${error}`);
+      }
+    }
+  }
+  console.log(notificationData);
   useEffect(() => {
     getUserProfile();
+    getNotification();
   }, []);
   return (
     <>
@@ -59,18 +88,83 @@ const TopNavBar = () => {
 
           {/* Profile */}
           <div className="relative ">
-            {/* Profile Button */}
-            <button
-              onClick={() => {
-                setIsProfilePopUpShow(!isProfilePopUpShow);
-              }}
-            >
-              <img
-                src={profileData?.avatar?.url}
-                alt="Profile"
-                className="w-9 h-9 rounded-full object-cover border border-gray-200 cursor-pointer"
-              />
-            </button>
+            <div className="flex items-center gap-20 relative">
+              {/* Notification Icon */}
+              <div>
+                <button className="relative">
+                  <Bell
+                    size={20}
+                    className="text-gray-600 hover:text-gray-800 cursor-pointer"
+                  />
+
+                  {/* Optional: Notification badge */}
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
+                    {notificationData?.length}
+                  </span>
+                </button>
+                <div className="absolute overflow-y-scroll h-52 right-0 mt-3 w-80 bg-white shadow-lg rounded-2xl p-3 space-y-3 z-50">
+                  {notificationData.map((notification) => (
+                    <div
+                      key={notification._id}
+                      className="flex items-center justify-between bg-white shadow-sm rounded-xl p-3 hover:shadow-md transition"
+                    >
+                      <div className="flex items-center gap-3">
+                        <img
+                          src={notification.receiverId.avatar.url}
+                          alt="user"
+                          className="w-10 h-10 rounded-full object-cover"
+                        />
+
+                        <div>
+                          <h1 className="text-sm font-semibold text-gray-900">
+                            {notification.receiverId.userName}
+                          </h1>
+                          <p className="text-xs text-gray-500">
+                            {notification.receiverId.email}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        {/* Accept */}
+                        <button className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 active:bg-gray-300 cursor-pointer transition">
+                          <Check size={16} className="text-black" />
+                        </button>
+
+                        {/* Reject */}
+                        <button className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 active:bg-gray-300 cursor-pointer transition">
+                          <X size={16} className="text-black" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* Profile Button */}
+              <div className="relative">
+                <button
+                  onClick={() => {
+                    setIsProfilePopUpShow(!isProfilePopUpShow);
+                  }}
+                >
+                  <img
+                    src={profileData?.avatar?.url}
+                    alt="Profile"
+                    className="w-9 h-9 rounded-full object-cover border border-gray-200 cursor-pointer"
+                  />
+                </button>
+
+                {/* Popup */}
+                {isProfilePopUpShow && (
+                  <div className="absolute right-0 mt-2 z-50">
+                    <ProfilePopUp
+                      setIsProfilePopUpShow={setIsProfilePopUpShow}
+                      isProfilePopUpShow={isProfilePopUpShow}
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
 
             {/* Popup */}
             {isProfilePopUpShow && (

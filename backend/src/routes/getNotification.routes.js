@@ -1,11 +1,11 @@
 import { Router } from "express";
-import NotificationControllers from "../controllers/sendNotification.controllers.js";
+import NotificationControllers from "../controllers/getNotification.controllers.js";
 import UserMiddleware from "../middlewares/user.middlewares.js";
 const notificationRoutes = Router();
 const notificationControllers = new NotificationControllers();
 notificationRoutes.get(
-  "/send",
+  "/get",
   UserMiddleware,
-  notificationControllers.sendNotification,
+  notificationControllers.getNotification,
 );
 export default notificationRoutes;
