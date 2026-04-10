@@ -4,6 +4,7 @@ import { Search, File, Bell, X, Check } from "lucide-react";
 import ProfilePopUp from "./ProfilePopUp";
 import connection from "../config/connection.config";
 import socket from "../config/socket";
+import toast, { Toaster } from "react-hot-toast";
 const TopNavBar = () => {
   const [isProfilePopUpShow, setIsProfilePopUpShow] = useState<boolean>(false);
   interface AvatarType {
@@ -90,13 +91,13 @@ const TopNavBar = () => {
 
     // listen for real-time notification
     socket.on("new_notification", (data) => {
-      console.log("🔥 New Notification:", data);
-      console.log(data);
+      // console.log("🔥 New Notification:", data);
+      // console.log(data);
       // update state
       setNotificationData((prev) => [data, ...prev]);
-      console.log(data);
+      // console.log(data);
       // optional: show toast / alert
-      alert("New notification received!");
+      toast.success("New notification for you");
     });
 
     return () => {
@@ -105,6 +106,7 @@ const TopNavBar = () => {
   }, [cookie?.userid]);
   return (
     <>
+      <Toaster position="bottom-right" />
       <header className="sticky top-0  bg-white border-b border-gray-200">
         <div className=" px-4 sm:px-6 lg:px-8 py-3 flex justify-around items-center ">
           {/* Logo */}
@@ -157,47 +159,53 @@ const TopNavBar = () => {
                 </button>
                 {isNotificationShow && (
                   <div className="absolute overflow-y-scroll h-52 right-0 mt-3 w-80 bg-white shadow-lg rounded-2xl p-3 space-y-3 z-50">
-                    {notificationData.map((notification) => (
-                      <div
-                        key={notification._id}
-                        className="flex items-center justify-between bg-white shadow-sm rounded-xl p-3 hover:shadow-md transition"
-                      >
-                        <div className="flex items-center gap-3">
-                          <img
-                            src={notification.receiverId.avatar.url}
-                            alt="user"
-                            className="w-10 h-10 rounded-full object-cover"
-                          />
+                    {notificationData.length > 0 ? (
+                      notificationData.map((notification) => (
+                        <div
+                          key={notification._id}
+                          className="flex items-center justify-between bg-white shadow-sm rounded-xl p-3 hover:shadow-md transition"
+                        >
+                          <div className="flex items-center gap-3">
+                            <img
+                              src={notification.receiverId.avatar.url}
+                              alt="user"
+                              className="w-10 h-10 rounded-full object-cover"
+                            />
 
-                          <div>
-                            <h1 className="text-sm font-semibold text-gray-900">
-                              {notification.receiverId.userName}
-                            </h1>
-                            <p className="text-xs text-gray-500">
-                              {notification.receiverId.email}
-                            </p>
+                            <div>
+                              <h1 className="text-sm font-semibold text-gray-900">
+                                {notification.receiverId.userName}
+                              </h1>
+                              <p className="text-xs text-gray-500">
+                                {notification.receiverId.email}
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            {/* Accept */}
+                            <button
+                              onClick={(e) => e.stopPropagation()}
+                              className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 active:bg-gray-300 cursor-pointer transition"
+                            >
+                              <Check size={16} className="text-black" />
+                            </button>
+
+                            {/* Reject */}
+                            <button
+                              onClick={(e) => e.stopPropagation()}
+                              className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 active:bg-gray-300 cursor-pointer transition"
+                            >
+                              <X size={16} className="text-black" />
+                            </button>
                           </div>
                         </div>
-
-                        <div className="flex items-center gap-2">
-                          {/* Accept */}
-                          <button
-                            onClick={(e) => e.stopPropagation()}
-                            className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 active:bg-gray-300 cursor-pointer transition"
-                          >
-                            <Check size={16} className="text-black" />
-                          </button>
-
-                          {/* Reject */}
-                          <button
-                            onClick={(e) => e.stopPropagation()}
-                            className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 active:bg-gray-300 cursor-pointer transition"
-                          >
-                            <X size={16} className="text-black" />
-                          </button>
-                        </div>
+                      ))
+                    ) : (
+                      <div>
+                        <h1>No notification</h1>
                       </div>
-                    ))}
+                    )}
                   </div>
                 )}
               </div>
