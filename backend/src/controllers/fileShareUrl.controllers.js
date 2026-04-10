@@ -3,6 +3,7 @@ import FileShareModel from "../models/share.models.js";
 import FileUploadModel from "../models/fileUpload.models.js";
 import axios from "axios";
 import NotificationModels from "../models/notification.models.js";
+import { getIo } from "../../socket.js";
 function convertToMs(value, unit) {
   switch (unit) {
     case "minutes":
@@ -68,10 +69,12 @@ class FileShareControllers {
       }
       // checking the restriction on url
       if (url.isRestriction === "restricted") {
-        await NotificationModels.create({
+        const notification = await NotificationModels.create({
           senderId: url.ownerId,
           receiverId: userid,
         });
+        const io = getIo();
+        io.to(url.ownerId.toString()).emit("new_notification", notification);
         return res.status(401).json({ message: "This file is restricted" });
       }
       const file = await FileUploadModel.findById(url.fileId);

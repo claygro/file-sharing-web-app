@@ -1,5 +1,4 @@
 import NotificationModels from "../models/notification.models.js";
-
 class NotificationControllers {
   async getNotification(req, res) {
     const { userid } = req.user;

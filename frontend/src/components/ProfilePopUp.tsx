@@ -70,7 +70,9 @@ const ProfilePopUp = ({
             <div className="grid grid-cols-2 gap-2 w-full">
               {/* Change Profile */}
               <button
-                onClick={() => {
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
                   (navigate("/layout/profile"),
                     setIsProfilePopUpShow(!isProfilePopUpShow));
                 }}

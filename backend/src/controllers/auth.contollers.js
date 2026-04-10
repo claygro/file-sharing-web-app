@@ -95,5 +95,6 @@ class AuthControllers {
       res.status(500).json({ message: `Error in signIn ${error}` });
     }
   }
+  // getting cookies
 }
 export default AuthControllers;

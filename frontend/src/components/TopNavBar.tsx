@@ -89,13 +89,17 @@ const TopNavBar = () => {
 
           {/* Profile */}
           <div className="relative ">
-            <div
-              className="flex items-center cursor-pointer gap-20 relative"
-              onClick={() => setIsNotificationShow(!isNotificationShow)}
-            >
+            <div className="flex items-center cursor-pointer gap-20 relative">
               {/* Notification Icon */}
               <div>
-                <button className="relative">
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    (e.stopPropagation(),
+                      setIsNotificationShow(!isNotificationShow));
+                  }}
+                  className="relative"
+                >
                   <Bell
                     size={20}
                     className="text-gray-600 hover:text-gray-800 cursor-pointer"

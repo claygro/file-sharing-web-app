@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import connection from "../config/connection.config";
-
+import socket from "../config/socket";
 import { RefreshCcw } from "lucide-react";
 import FilePreviewPopUp from "./FilePreviewPopUp";
 import { FileContext } from "../context/fileRetriveContext";
