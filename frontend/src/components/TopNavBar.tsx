@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Search, File, Bell, X, Check } from "lucide-react";
 import ProfilePopUp from "./ProfilePopUp";
 import connection from "../config/connection.config";
+import socket from "../config/socket";
 const TopNavBar = () => {
   const [isProfilePopUpShow, setIsProfilePopUpShow] = useState<boolean>(false);
   interface AvatarType {
@@ -23,11 +24,32 @@ const TopNavBar = () => {
     };
     status: string;
   }
+  interface CookieType {
+    username: string;
+    avatar: {
+      url: string;
+    };
+    userid: string;
+    email: string;
+  }
   const [profileData, setPofileData] = useState<ProfileType | null>(null);
   const [notificationData, setNotificationData] = useState<NotificationType[]>(
     [],
   );
   const [isNotificationShow, setIsNotificationShow] = useState<boolean>(false);
+  const [cookie, setCookie] = useState<CookieType>();
+  async function getCookies() {
+    try {
+      const token = await connection.get("/cookies/get");
+      setCookie(token.data);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.log(`Error in getting cookies ${error}`);
+      } else {
+        console.log(`Error in getting cookies ${error}`);
+      }
+    }
+  }
   async function getUserProfile() {
     try {
       const response = await connection.get("/profile/profile");
@@ -55,9 +77,32 @@ const TopNavBar = () => {
   }
   console.log(notificationData);
   useEffect(() => {
+    getCookies();
     getUserProfile();
     getNotification();
   }, []);
+  // for websocket
+  useEffect(() => {
+    if (!cookie?.userid) return;
+
+    // join your room
+    socket.emit("join", cookie.userid);
+
+    // listen for real-time notification
+    socket.on("new_notification", (data) => {
+      console.log("🔥 New Notification:", data);
+      console.log(data);
+      // update state
+      setNotificationData((prev) => [data, ...prev]);
+      console.log(data);
+      // optional: show toast / alert
+      alert("New notification received!");
+    });
+
+    return () => {
+      socket.off("new_notification");
+    };
+  }, [cookie?.userid]);
   return (
     <>
       <header className="sticky top-0  bg-white border-b border-gray-200">

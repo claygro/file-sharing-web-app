@@ -73,6 +73,7 @@ class FileShareControllers {
           senderId: url.ownerId,
           receiverId: userid,
         });
+        await notification.populate("receiverId");
         const io = getIo();
         io.to(url.ownerId.toString()).emit("new_notification", notification);
         return res.status(401).json({ message: "This file is restricted" });
