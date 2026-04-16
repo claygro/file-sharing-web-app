@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, type ChangeEvent } from "react";
 // import demoImage from "../assets/images.jpeg";
 import { Search, File, Bell, X, Check } from "lucide-react";
 import ProfilePopUp from "./ProfilePopUp";
@@ -17,6 +17,7 @@ const TopNavBar = () => {
     _id: string;
     senderId: string;
     receiverId: {
+      _id: string;
       email: string;
       userName: string;
       avatar: {
@@ -24,6 +25,7 @@ const TopNavBar = () => {
       };
     };
     status: string;
+    token: string;
   }
   interface CookieType {
     username: string;
@@ -39,6 +41,7 @@ const TopNavBar = () => {
   );
   const [isNotificationShow, setIsNotificationShow] = useState<boolean>(false);
   const [cookie, setCookie] = useState<CookieType>();
+  const [acceptUserId, setAcceptUserId] = useState<string>("");
   async function getCookies() {
     try {
       const token = await connection.get("/cookies/get");
@@ -76,7 +79,7 @@ const TopNavBar = () => {
       }
     }
   }
-  console.log(notificationData);
+  // console.log(notificationData);
   useEffect(() => {
     getCookies();
     getUserProfile();
@@ -104,6 +107,24 @@ const TopNavBar = () => {
       socket.off("new_notification");
     };
   }, [cookie?.userid]);
+  //handling the accept request
+  const handleAccept = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    id: string,
+    token: string,
+  ) => {
+    e.stopPropagation();
+    try {
+      setAcceptUserId(id);
+      console.log(token);
+      await connection.post(`/request/accept/${id}`, { token });
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log(`Error in handling accept request ${error}`);
+      }
+      console.log(`Error in handling accept request ${error}`);
+    }
+  };
   return (
     <>
       <Toaster position="bottom-right" />
@@ -185,7 +206,13 @@ const TopNavBar = () => {
                           <div className="flex items-center gap-2">
                             {/* Accept */}
                             <button
-                              onClick={(e) => e.stopPropagation()}
+                              onClick={(e) =>
+                                handleAccept(
+                                  e,
+                                  notification?.receiverId?._id,
+                                  notification?.token,
+                                )
+                              }
                               className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 active:bg-gray-300 cursor-pointer transition"
                             >
                               <Check size={16} className="text-black" />

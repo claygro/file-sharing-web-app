@@ -72,6 +72,7 @@ class FileShareControllers {
         const notification = await NotificationModels.create({
           senderId: url.ownerId,
           receiverId: userid,
+          token: token,
         });
         await notification.populate("receiverId");
         const io = getIo();
@@ -104,6 +105,16 @@ class FileShareControllers {
       res
         .status(500)
         .json({ message: `Error in validate the expire of url ${error}` });
+    }
+  }
+  // handling the accept request
+  async accept(req, res) {
+    const { id } = req.params;
+    try {
+    } catch (error) {
+      res
+        .status(500)
+        .json({ message: `Error in handling the accept request ${error}` });
     }
   }
 }

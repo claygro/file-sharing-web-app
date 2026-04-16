@@ -13,6 +13,7 @@ import profileRoutes from "./src/routes/profile.routes.js";
 import fileShareRoutes from "./src/routes/fileShare.routes.js";
 import notificationRoutes from "./src/routes/getNotification.routes.js";
 import cookiesRoutes from "./src/routes/getCookies.routes.js";
+import fileAccessRoutes from "./src/routes/fileAccessRequest.routes.js";
 const app = express();
 app.use(
   cors({
@@ -37,6 +38,7 @@ app.use("/profile", profileRoutes);
 app.use("/shareUrl", fileShareRoutes);
 app.use("/notification", notificationRoutes);
 app.use("/cookies", cookiesRoutes);
+app.use("/request", fileAccessRoutes);
 const port = process.env.PORT;
 async function startServer() {
   try {

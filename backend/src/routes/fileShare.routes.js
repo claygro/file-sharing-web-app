@@ -9,4 +9,5 @@ fileShareRoutes.get(
   UserMiddleware,
   fileShareControllers.checkUrl,
 );
+fileShareRoutes.post("/accept/:id", fileShareControllers.accept);
 export default fileShareRoutes;
