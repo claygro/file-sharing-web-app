@@ -55,31 +55,34 @@ class FileShareControllers {
   async checkUrl(req, res) {
     const { token } = req.params;
     const { userid } = req.user;
-    console.log(req.user);
     try {
-      const url = await FileShareModel.findOne({ token });
-      if (!url) {
-        return res.status(404).json({ message: "Can't find the url" });
+      const files = await FileShareModel.findOne({ token });
+      if (!files) {
+        return res.status(404).json({ message: "Can't find the file" });
       }
       // checking the expire of the url
-      if (url.expiresAt !== null) {
-        if (Date.now() > new Date(url.expiresAt).getTime()) {
+      if (files.expiresAt !== null) {
+        if (Date.now() > new Date(files.expiresAt).getTime()) {
           return res.status(410).json({ message: "Link expire" });
         }
       }
+      const hasAccess = files.accessUser.some(
+        (user) => user.toString() == userid,
+      );
+      console.log(hasAccess);
       // checking the restriction on url
-      if (url.isRestriction === "restricted") {
+      if (files.isRestriction === "restricted" && !hasAccess) {
         const notification = await NotificationModels.create({
-          senderId: url.ownerId,
+          senderId: files.ownerId,
           receiverId: userid,
           token: token,
         });
         await notification.populate("receiverId");
         const io = getIo();
-        io.to(url.ownerId.toString()).emit("new_notification", notification);
+        io.to(files.ownerId.toString()).emit("new_notification", notification);
         return res.status(401).json({ message: "This file is restricted" });
       }
-      const file = await FileUploadModel.findById(url.fileId);
+      const file = await FileUploadModel.findById(files.fileId);
       if (!file) {
         return res.status(404).json({ message: "File not found" });
       }
@@ -100,21 +103,14 @@ class FileShareControllers {
       // Opens file inside the browser
       // Example: PDF opens in a tab
       // 📤 Pipe stream to client
+      if (!hasAccess) {
+        return res.status(403).json({ message: "No access to this file" });
+      }
       response.data.pipe(res);
     } catch (error) {
       res
         .status(500)
         .json({ message: `Error in validate the expire of url ${error}` });
-    }
-  }
-  // handling the accept request
-  async accept(req, res) {
-    const { id } = req.params;
-    try {
-    } catch (error) {
-      res
-        .status(500)
-        .json({ message: `Error in handling the accept request ${error}` });
     }
   }
 }
