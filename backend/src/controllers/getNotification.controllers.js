@@ -15,24 +15,6 @@ class NotificationControllers {
       res.status(500).json({ message: `Error in send notification ${error}` });
     }
   }
-  // deleting the notification
-  async deleteNotification(req, res) {
-    const { token } = req.body;
-    const { id } = req.params; //getting the receiver id
-    try {
-      const deleteResponse = await NotificationModels.findOneAndDelete({
-        receiverId: id,
-        token: token,
-      });
-      if (!deleteResponse) {
-        return res.status(404).json({ message: "Notification cannot find" });
-      }
-      res.status(200).json({ message: "Notification accepted successfully" });
-    } catch (error) {
-      res
-        .status(500)
-        .json({ message: `Error in deleting the notification :${error}` });
-    }
-  }
+  
 }
 export default NotificationControllers;

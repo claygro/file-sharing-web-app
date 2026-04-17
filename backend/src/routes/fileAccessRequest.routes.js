@@ -8,4 +8,9 @@ fileAccessRoutes.post(
   UserMiddleware,
   fileAccessRequest.acceptRequest,
 );
+fileAccessRoutes.delete(
+  "/delete/:id",
+  UserMiddleware,
+  fileAccessRequest.deleteNotification,
+);
 export default fileAccessRoutes;

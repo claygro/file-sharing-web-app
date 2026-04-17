@@ -119,6 +119,14 @@ const TopNavBar = () => {
       console.log(token);
 
       await connection.post(`/request/accept/${id}`, { token });
+      await connection.delete(`/request/delete/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: {
+          token: token,
+        },
+      });
       setNotificationData(
         notificationData.filter((notification) => {
           notification.receiverId._id !== id && notification.token !== token;
