@@ -72,6 +72,18 @@ class FileShareControllers {
       console.log(hasAccess);
       // checking the restriction on url
       if (files.isRestriction === "restricted" && !hasAccess) {
+        const existNotification = await NotificationModels.findOne({
+          receiverId: userid,
+          token: token,
+        });
+        if (existNotification) {
+          return res
+            .status(409)
+            .json({
+              message:
+                "Notification already sent. Please wait for sender response.",
+            });
+        }
         const notification = await NotificationModels.create({
           senderId: files.ownerId,
           receiverId: userid,
