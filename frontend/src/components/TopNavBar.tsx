@@ -117,7 +117,13 @@ const TopNavBar = () => {
     try {
       setAcceptUserId(id);
       console.log(token);
+
       await connection.post(`/request/accept/${id}`, { token });
+      setNotificationData(
+        notificationData.filter((notification) => {
+          notification.receiverId._id !== id && notification.token !== token;
+        }),
+      );
     } catch (error) {
       if (error instanceof Error) {
         console.log(`Error in handling accept request ${error}`);
@@ -125,6 +131,7 @@ const TopNavBar = () => {
       console.log(`Error in handling accept request ${error}`);
     }
   };
+
   return (
     <>
       <Toaster position="bottom-right" />

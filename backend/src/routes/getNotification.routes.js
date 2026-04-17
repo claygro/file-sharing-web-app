@@ -8,4 +8,9 @@ notificationRoutes.get(
   UserMiddleware,
   notificationControllers.getNotification,
 );
+notificationRoutes.delete(
+  "/delete/:id",
+  UserMiddleware,
+  notificationControllers.deleteNotification,
+);
 export default notificationRoutes;
