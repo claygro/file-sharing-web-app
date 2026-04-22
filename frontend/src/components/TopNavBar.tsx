@@ -120,7 +120,7 @@ const TopNavBar = () => {
       console.log(token);
 
       await connection.post(`/request/accept/${id}`, { token });
-      await connection.delete(`/request/delete/${id}`, {
+      await connection.delete(`/request/delete`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -130,7 +130,7 @@ const TopNavBar = () => {
       });
       setNotificationData(
         notificationData.filter((notification) => {
-          notification.receiverId._id !== id && notification.token !== token;
+          notification.token !== token;
         }),
       );
     } catch (error) {
@@ -140,7 +140,34 @@ const TopNavBar = () => {
       console.log(`Error in handling accept request ${error}`);
     }
   };
-
+  // reject the access of the file
+  const handleReject = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    id: string,
+    token: string,
+  ) => {
+    e.stopPropagation();
+    try {
+      console.log(token);
+      await connection.post(`/request/denied/${id}`, { token });
+      await connection.delete(`/request/delete/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: {
+          token: token,
+        },
+      });
+      setNotificationData((prev) =>
+        prev.filter((notification) => notification.token !== token),
+      );
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.log(`Error in handling reject in notification ${error}`);
+      }
+      console.log(`Error in handling reject in notification ${error}`);
+    }
+  };
   return (
     <>
       <Toaster position="bottom-right" />
@@ -237,7 +264,13 @@ const TopNavBar = () => {
 
                             {/* Reject */}
                             <button
-                              onClick={(e) => e.stopPropagation()}
+                              onClick={(e) =>
+                                handleReject(
+                                  e,
+                                  notification?._id,
+                                  notification?.token,
+                                )
+                              }
                               className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 active:bg-gray-300 cursor-pointer transition"
                             >
                               <X size={16} className="text-black" />

@@ -11,7 +11,10 @@ const notificationSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
   },
-
+  status: {
+    type: String,
+    default: "pending",
+  },
   fileName: {
     type: String,
     // required: [true, "File name is required"],

@@ -74,13 +74,25 @@ class FileShareControllers {
         const existNotification = await NotificationModels.findOne({
           receiverId: userid,
           token: token,
-        });
+        }).populate("senderId");
+        // const status = await NotificationModels.findOne({ token }).populate(
+        //   "senderId",
+        // );
+
         if (existNotification) {
-          return res.status(409).json({
-            message:
-              "Notification already sent. Please wait for sender response.",
-          });
+          if (existNotification.status === "denied") {
+            return res.status(403).json({
+              message: `${existNotification.senderId.userName} denied your request for ${existNotification.fileName} file`,
+            });
+          }
+          if (existNotification.status === "pending") {
+            return res.status(409).json({
+              message:
+                "Notification already sent. Please wait for sender response.",
+            });
+          }
         }
+
         const file = await FileShareModel.findOne({ token: token }).populate(
           "fileId",
         );
@@ -91,6 +103,13 @@ class FileShareControllers {
           token: token,
           fileName: fileName,
         });
+        const status = await NotificationModels.findOne({ token });
+
+        if (status.status === "denied") {
+          return res.status(403).json({
+            message: `${status.senderId.userName} denied your request for ${status.fileName} file`,
+          });
+        }
         await notification.populate("receiverId");
         const io = getIo();
         io.to(files.ownerId.toString()).emit("new_notification", notification);
@@ -120,6 +139,7 @@ class FileShareControllers {
       if (!hasAccess) {
         return res.status(403).json({ message: "No access to this file" });
       }
+
       response.data.pipe(res);
     } catch (error) {
       res

@@ -13,4 +13,9 @@ fileAccessRoutes.delete(
   UserMiddleware,
   fileAccessRequest.deleteNotification,
 );
+fileAccessRoutes.post(
+  "/denied/:receiverId",
+  UserMiddleware,
+  fileAccessRequest.accessDenied,
+);
 export default fileAccessRoutes;
