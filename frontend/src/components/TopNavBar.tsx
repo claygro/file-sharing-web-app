@@ -195,31 +195,31 @@ const TopNavBar = () => {
                   </span>
                 </button>
                 {isNotificationShow && (
-                  <div className="absolute overflow-y-scroll h-52 right-0 mt-3 w-80 bg-white shadow-lg rounded-2xl p-3 space-y-3 z-50">
+                  <div className="absolute overflow-y-scroll  h-52 right-0 mt-3 w-lg bg-white shadow-lg rounded-2xl p-3 space-y-3 z-50">
                     {notificationData.length > 0 ? (
                       notificationData.map((notification) => (
                         <div
                           key={notification._id}
                           className="flex items-center justify-between bg-white shadow-sm rounded-xl p-3 hover:shadow-md transition"
                         >
-                          <div className="flex items-center gap-3">
+                          <div className="flex items-center ">
                             <img
                               src={notification.receiverId.avatar.url}
                               alt="user"
                               className="w-10 h-10 rounded-full object-cover"
                             />
-
-                            <div>
-                              <h1 className="text-sm font-semibold text-gray-900">
-                                User {notification.receiverId.userName} wants to
-                                access the file of {notification.fileName}
-                              </h1>
-                              <p className="text-xs text-gray-500">
-                                {notification.receiverId.email}
-                              </p>
-                            </div>
                           </div>
-
+                          <div>
+                            <h1 className="text-sm font-semibold text-gray-900">
+                              Name: {notification.receiverId.userName}
+                            </h1>
+                            <h1 className="text-sm font-semibold text-gray-900">
+                              FileName: {notification.fileName}
+                            </h1>
+                            <p className="text-xs text-gray-500">
+                              Email: {notification.receiverId.email}
+                            </p>
+                          </div>
                           <div className="flex items-center gap-2">
                             {/* Accept */}
                             <button
