@@ -25,6 +25,7 @@ const TopNavBar = () => {
       };
     };
     status: string;
+    fileName: string;
     token: string;
   }
   interface CookieType {
@@ -41,7 +42,7 @@ const TopNavBar = () => {
   );
   const [isNotificationShow, setIsNotificationShow] = useState<boolean>(false);
   const [cookie, setCookie] = useState<CookieType>();
-  const [acceptUserId, setAcceptUserId] = useState<string>("");
+  console.log(notificationData);
   async function getCookies() {
     try {
       const token = await connection.get("/cookies/get");
@@ -70,6 +71,7 @@ const TopNavBar = () => {
   async function getNotification() {
     try {
       const response = await connection.get("/notification/get");
+      console.log(response);
       setNotificationData(response.data);
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -115,7 +117,6 @@ const TopNavBar = () => {
   ) => {
     e.stopPropagation();
     try {
-      setAcceptUserId(id);
       console.log(token);
 
       await connection.post(`/request/accept/${id}`, { token });
@@ -210,7 +211,8 @@ const TopNavBar = () => {
 
                             <div>
                               <h1 className="text-sm font-semibold text-gray-900">
-                                {notification.receiverId.userName}
+                                User {notification.receiverId.userName} wants to
+                                access the file of {notification.fileName}
                               </h1>
                               <p className="text-xs text-gray-500">
                                 {notification.receiverId.email}

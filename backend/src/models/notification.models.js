@@ -12,11 +12,11 @@ const notificationSchema = new mongoose.Schema({
     ref: "user",
   },
 
-  status: {
+  fileName: {
     type: String,
-    enum: ["pending", "accepted", "rejected"],
-    default: "pending",
+    // required: [true, "File name is required"],
   },
+
   token: {
     type: String,
   },

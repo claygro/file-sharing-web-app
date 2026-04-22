@@ -69,7 +69,6 @@ class FileShareControllers {
       const hasAccess = files.accessUser.some(
         (user) => user.toString() == userid,
       );
-      console.log(hasAccess);
       // checking the restriction on url
       if (files.isRestriction === "restricted" && !hasAccess) {
         const existNotification = await NotificationModels.findOne({
@@ -77,17 +76,20 @@ class FileShareControllers {
           token: token,
         });
         if (existNotification) {
-          return res
-            .status(409)
-            .json({
-              message:
-                "Notification already sent. Please wait for sender response.",
-            });
+          return res.status(409).json({
+            message:
+              "Notification already sent. Please wait for sender response.",
+          });
         }
+        const file = await FileShareModel.findOne({ token: token }).populate(
+          "fileId",
+        );
+        const fileName = file.fileId.name;
         const notification = await NotificationModels.create({
           senderId: files.ownerId,
           receiverId: userid,
           token: token,
+          fileName: fileName,
         });
         await notification.populate("receiverId");
         const io = getIo();

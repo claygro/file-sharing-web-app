@@ -15,6 +15,5 @@ class NotificationControllers {
       res.status(500).json({ message: `Error in send notification ${error}` });
     }
   }
-  
 }
 export default NotificationControllers;
