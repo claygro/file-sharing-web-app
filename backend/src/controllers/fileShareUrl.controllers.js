@@ -136,7 +136,7 @@ class FileShareControllers {
       // Opens file inside the browser
       // Example: PDF opens in a tab
       // 📤 Pipe stream to client
-      if (!hasAccess) {
+      if (!hasAccess && files.isRestriction == "isRestriction") {
         return res.status(403).json({ message: "No access to this file" });
       }
 
