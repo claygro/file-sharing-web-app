@@ -114,58 +114,57 @@ const TopNavBar = () => {
     e: React.MouseEvent<HTMLButtonElement>,
     id: string,
     token: string,
+    notificationId: string,
   ) => {
     e.stopPropagation();
+
     try {
       console.log(token);
 
-      await connection.post(`/request/accept/${id}`, { token });
-      await connection.delete(`/request/delete`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        data: {
-          token: token,
-        },
+      // accept request
+      await connection.post(`/request/accept/${id}`, {
+        token,
+        notificationId,
       });
-      setNotificationData(
-        notificationData.filter((notification) => {
-          notification.token !== token;
-        }),
+
+      // remove from frontend state
+      setNotificationData((prev) =>
+        prev.filter((notification) => notification._id !== notificationId),
       );
     } catch (error) {
       if (error instanceof Error) {
         console.log(`Error in handling accept request ${error}`);
+      } else {
+        console.log(`Error in handling accept request ${error}`);
       }
-      console.log(`Error in handling accept request ${error}`);
     }
   };
   // reject the access of the file
   const handleReject = async (
     e: React.MouseEvent<HTMLButtonElement>,
-    id: string,
     token: string,
+    notificationId: string,
   ) => {
     e.stopPropagation();
+
     try {
       console.log(token);
-      await connection.post(`/request/denied/${id}`, { token });
-      await connection.delete(`/request/delete/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        data: {
-          token: token,
-        },
+
+      // deny access
+      await connection.post(`/request/denied/${notificationId}`, {
+        token,
       });
+
+      // remove from frontend
       setNotificationData((prev) =>
-        prev.filter((notification) => notification.token !== token),
+        prev.filter((notification) => notification._id !== notificationId),
       );
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.log(`Error in handling reject in notification ${error}`);
+      } else {
+        console.log(`Error in handling reject in notification ${error}`);
       }
-      console.log(`Error in handling reject in notification ${error}`);
     }
   };
   return (
@@ -255,6 +254,7 @@ const TopNavBar = () => {
                                   e,
                                   notification?.receiverId?._id,
                                   notification?.token,
+                                  notification?._id,
                                 )
                               }
                               className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 active:bg-gray-300 cursor-pointer transition"
@@ -267,8 +267,8 @@ const TopNavBar = () => {
                               onClick={(e) =>
                                 handleReject(
                                   e,
-                                  notification?._id,
                                   notification?.token,
+                                  notification?._id,
                                 )
                               }
                               className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 active:bg-gray-300 cursor-pointer transition"
